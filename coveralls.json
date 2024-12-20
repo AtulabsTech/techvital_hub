@@ -1,0 +1,6 @@
+{
+  "coverage_options": {
+    "minimum_coverage": 70.0
+  },
+  "skip_files": ["lib/edvital_hub_web/components/core_components.ex"]
+}

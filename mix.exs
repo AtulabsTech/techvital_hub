@@ -12,11 +12,17 @@ defmodule EdvitalHub.MixProject do
       deps: phoenix_deps() ++ atulabs_deps(),
 
       # CI
+      dialyzer: [
+        plt_add_apps: [:ex_unit, :mix],
+        plt_file: {:no_warn, "priv/plts/dialyzer.plt"}
+      ],
       preferred_cli_env: [
         ci: :test,
         coveralls: :test,
         "coveralls.detail": :test,
-        "coveralls.html": :test
+        "coveralls.html": :test,
+        credo: :test,
+        dialyzer: :test
       ],
       test_coverage: [tool: ExCoveralls]
     ]
@@ -41,6 +47,8 @@ defmodule EdvitalHub.MixProject do
   # Type `mix help deps` for examples and options.
   defp atulabs_deps do
     [
+      {:credo, "~> 1.7", only: :test, runtime: false},
+      {:dialyxir, "~> 1.4", only: :test, runtime: false},
       {:excoveralls, "~> 0.18", only: :test},
       {:mix_audit, "~> 2.1", only: :test, runtime: false},
       {:sobelow, "~> 0.13", only: :test, runtime: false}
@@ -110,6 +118,8 @@ defmodule EdvitalHub.MixProject do
         "sobelow --config .sobelow-conf",
         "format --check-formatted",
         "cmd npx prettier -c .",
+        "credo --strict",
+        "dialyzer",
         "test --cover --warnings-as-errors"
       ],
       prettier: ["cmd npx prettier -w ."]
