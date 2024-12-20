@@ -9,7 +9,16 @@ defmodule EdvitalHub.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: phoenix_deps() ++ atulabs_deps(),
+
+      # CI
+      preferred_cli_env: [
+        ci: :test,
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.html": :test
+      ],
+      test_coverage: [tool: ExCoveralls]
     ]
   end
 
@@ -30,7 +39,15 @@ defmodule EdvitalHub.MixProject do
   # Specifies your project dependencies.
   #
   # Type `mix help deps` for examples and options.
-  defp deps do
+  defp atulabs_deps do
+    [
+      {:excoveralls, "~> 0.18", only: :test},
+      {:mix_audit, "~> 2.1", only: :test, runtime: false},
+      {:sobelow, "~> 0.13", only: :test, runtime: false}
+    ]
+  end
+
+  defp phoenix_deps do
     [
       {:phoenix, "~> 1.7.18"},
       {:phoenix_ecto, "~> 4.5"},
@@ -79,6 +96,14 @@ defmodule EdvitalHub.MixProject do
         "tailwind edvital_hub --minify",
         "esbuild edvital_hub --minify",
         "phx.digest"
+      ],
+      ci: [
+        "deps.unlock --check-unused",
+        "deps.audit",
+        "hex.audit",
+        "sobelow --config .sobelow-conf",
+        "format --check-formatted",
+        "test --cover --warnings-as-errors"
       ]
     ]
   end
