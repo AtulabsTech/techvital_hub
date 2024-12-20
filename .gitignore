@@ -35,3 +35,12 @@ edvital_hub-*.tar
 npm-debug.log
 /assets/node_modules/
 
+# Atulabs development/test artifacts
+/node_modules/
+/priv/plts/
+/screenshots/
+.DS_Store
+.env
+package.json
+package-lock.json
+

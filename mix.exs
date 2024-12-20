@@ -86,7 +86,13 @@ defmodule EdvitalHub.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      setup: ["deps.get", "ecto.setup", "assets.setup", "assets.build"],
+      setup: [
+        "deps.get",
+        "cmd npm i -D prettier prettier-plugin-toml",
+        "ecto.setup",
+        "assets.setup",
+        "assets.build"
+      ],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
@@ -103,8 +109,10 @@ defmodule EdvitalHub.MixProject do
         "hex.audit",
         "sobelow --config .sobelow-conf",
         "format --check-formatted",
+        "cmd npx prettier -c .",
         "test --cover --warnings-as-errors"
-      ]
+      ],
+      prettier: ["cmd npx prettier -w ."]
     ]
   end
 end
