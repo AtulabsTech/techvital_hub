@@ -50,6 +50,7 @@ defmodule EdvitalHub.MixProject do
       {:credo, "~> 1.7", only: :test, runtime: false},
       {:dialyxir, "~> 1.4", only: :test, runtime: false},
       {:excoveralls, "~> 0.18", only: :test},
+      {:github_workflows_generator, "~> 0.1", only: :dev, runtime: false},
       {:mix_audit, "~> 2.1", only: :test, runtime: false},
       {:sobelow, "~> 0.13", only: :test, runtime: false}
     ]
