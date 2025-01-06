@@ -13,6 +13,21 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        mooli: ['"mooli-regular"', 'serif'],
+        // this
+        lora: ['"Lora"', 'serif'],
+        signika: ['"Signika Negative"', 'serif'],
+        // THIS
+        tajawal: ['"Tajawal"', 'serif'],
+        maven: ['"Maven Pro"', 'serif'],
+        bree: ['"Bree Serif"', 'serif'],
+        prata: ['"Prata"', 'serif'],
+        // this
+        bitter: ['"Bitter"', 'serif'],
+        ptserif: ['"PT Serif"', 'serif'],
+        crimson: ['"Crimson Text"', 'serif'],
+      },
       colors: {
         brand: '#FD4F00',
       },
