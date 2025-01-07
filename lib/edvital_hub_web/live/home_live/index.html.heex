@@ -1,9 +1,11 @@
 <div class="text-white">
-  <div class="px-2 md:px-8 lg:flex items-center justify-center">
+  <div class="px-2 md:px-8 lg:flex items-center justify-center mb-4">
     <section class="w-full lg:w-1/2 md:pl-6 space-y-8 pt-4 md:space-y-12">
-      <p class="text-4xl md:text-6xl">Launch your software development career.</p>
+      <p class="text-4xl md:text-6xl font-tajawal font-bold">
+        Launch your software development career.
+      </p>
       <p class="text-md lg:text-lg">
-        Unlock your potential with our one on one coaching and hands-on internship programs designed to equip you with the skills and experience you need to land your dream job in software engineering!
+        Unlock your potential with our one on one coaching and hands-on internship programs designed to equip you with the skills and experience you need to build your own websites, applications, get into freelancing and open-source, or land that dream job in software engineering!
       </p>
       <button class="p-2 border-2 rounded-lg mr-2 bg-yellow-300 text-green-600">
         Get Started
@@ -12,50 +14,59 @@
         Explore Programs
       </button>
     </section>
-    <img src={~p"/images/illustrations/launch.svg"} class="lg:w-[700px] lg:h-[600px]" />
+    <img src={~p"/images/illustrations/launch.svg"} class="lg:max-w-[600px] lg:max-h-[600px]" />
   </div>
-  <div>
-    <section class="md:flex items-start justify-around mx-auto max-w-[90%] text-black mb-4">
-      <HomeComponents.course_outline title="Learn" course_outline={@learn_outline}>
-        <div class="h-3 bg-gradient-to-r from-yellow-200 to-yellow-900"></div>
-        <div class="flex justify-between"><span>WEEK 1</span><span>WEEK 8</span></div>
-      </HomeComponents.course_outline>
-      <HomeComponents.course_outline title="Build" course_outline={@build_outline}>
-        <div class="h-3 bg-gradient-to-r from-purple-200 to-purple-900"></div>
-        <div class="flex justify-between"><span>WEEK 9</span><span>WEEK 16</span></div>
-      </HomeComponents.course_outline>
-      <HomeComponents.course_outline title="Get Hired" course_outline={@learn_outline}>
-        <div class="h-3 bg-gradient-to-r from-green-200 to-green-900"></div>
-        <div class="flex justify-between"><span>WEEK 17</span><span>WEEK 24</span></div>
-      </HomeComponents.course_outline>
-    </section>
-  </div>
+  <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mx-auto max-w-[90%] text-black mb-4">
+    <HomeComponents.course_outline title="Learn" course_outline={@learn_outline}>
+      <div class="h-3 bg-gradient-to-r from-yellow-200 to-yellow-900"></div>
+      <div class="flex justify-between">
+        <span class="font-bitter">WEEK 1</span><span class="font-bitter">WEEK 16</span>
+      </div>
+    </HomeComponents.course_outline>
+    <HomeComponents.course_outline title="Build" course_outline={@build_outline}>
+      <div class="h-3 bg-gradient-to-r from-purple-200 to-purple-900"></div>
+      <div class="flex justify-between">
+        <span class="font-bitter">WEEK 17</span><span class="font-bitter">WEEK 24</span>
+      </div>
+    </HomeComponents.course_outline>
+    <HomeComponents.course_outline title="Get Hired" course_outline={internship_outline()}>
+      <div class="h-3 bg-gradient-to-r from-green-200 to-green-900"></div>
+      <div class="flex justify-between">
+        <span class="font-bitter">WEEK 17</span><span class="font-bitter">WEEK 24</span>
+      </div>
+    </HomeComponents.course_outline>
+  </section>
   <section>
     <div class="lg:flex mt-3 lg:mt-16 lg:items-center">
       <img src={~p"/images/illustrations/guidance.svg"} class="lg:max-w-[700px] lg:max-h-[600px]" />
       <aside>
-        <h2 class="font-bold text-2xl md:text-4xl">We Take the Journey with you</h2>
-        <HomeComponents.list_items color="#aaa" items={list_items()} />
+        <h2 class="font-bold text-2xl md:text-4xl mb-2 font-tajawal">
+          We Take the Journey with you
+        </h2>
+        <HomeComponents.list_items color="#873e23" items={journey_items()} />
       </aside>
     </div>
     <HomeComponents.call_to_action background="gray" call_to_action="Let us guide you" />
   </section>
-  <section class="text-center pt-4">
-    Maybe a Dashboard Video or Screenshot???
-  </section>
+  <%!-- TODO: Add a Dashboard ScreenShot or Video--%>
   <section>
     <div class="lg:flex lg:flex-row-reverse lg:items-center">
       <img src={~p"/images/illustrations/graduate.svg"} class="lg:w-[700px] lg:h-[600px]" />
       <aside>
-        <h2 class="font-bold text-2xl md:text-4xl text-yellow-300">
-          Graduate and become one of us
+        <h2 class="font-bold text-2xl md:text-4xl text-yellow-300 mb-2 font-tajawal">
+          Transform and become one of us
         </h2>
-        <HomeComponents.list_items color="#ff7" items={list_items()} />
+        <HomeComponents.list_items color="#48205D" items={transformation_items()} />
       </aside>
     </div>
     <HomeComponents.call_to_action background="purple" call_to_action="Now is the Time!" />
   </section>
   <section>
-    Why EdvitalHub
+    <HomeComponents.why_edvital_hub title="What Sets Us Apart" />
+    <HomeComponents.call_to_action background="gray" call_to_action="Let us guide you!" />
+  </section>
+  <%!-- TODO: Our past apprentices appreciate the program SECTION --%>
+  <section>
+    <HomeComponents.hiring_partners />
   </section>
 </div>
