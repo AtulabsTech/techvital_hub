@@ -1,5 +1,5 @@
 <header class="sticky top-0 z-40 bg-white px-4">
-  <div class="flex items-center justify-between border-b border-zinc-100 py-6 text-sm">
+  <div class="flex items-center justify-between border-b border-zinc-100 py-6 text-sm md:text-base lg:text-lg">
     <div class="flex items-center gap-4">
       <a href="/">
         <img src={~p"/images/default.svg"} width="36" />
@@ -8,37 +8,36 @@
         Edvital Hub
       </p>
     </div>
-    <%!-- <div></div> --%>
-    <div class="ml-[30%]">
-      <.link navigate={~p"/"} class="font-semibold leading-6 text-zinc-900 hover:text-zinc-700">
-        About Us
-      </.link>
-      <.link
-        navigate={~p"/"}
-        class="ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
-      >
-        Community
-      </.link>
-      <.link
-        navigate={~p"/"}
-        class="ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
-      >
-        Blog
-      </.link>
-      <.link
-        navigate={~p"/"}
-        class="ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
-      >
-        Contact Us
-      </.link>
+    <div class="flex items-center justify-between md:space-x-10 lg:space-x-20">
+      <div class="hidden md:block">
+        <.link navigate={~p"/"} class="font-semibold leading-6 text-zinc-900 hover:text-zinc-700">
+          About Us
+        </.link>
+        <.link
+          navigate={~p"/"}
+          class="ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
+        >
+          Blog
+        </.link>
+        <.link
+          navigate={~p"/"}
+          class="ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
+        >
+          Contact Us
+        </.link>
+      </div>
+      <div class="hidden md:flex items-center gap-4 font-semibold leading-6 text-white">
+        <.link navigate={~p"/"} class="rounded-lg bg-white text-black px-2 py-1">
+          Sign In
+        </.link>
+        <.link navigate={~p"/"} class="rounded-lg bg-black px-2 py-1 hover:bg-zinc-200/80">
+          Get Started FREE
+        </.link>
+      </div>
     </div>
-    <div class="flex items-center gap-4 font-semibold leading-6 text-white">
-      <.link navigate={~p"/"} class="rounded-lg bg-white text-black px-2 py-1">
-        Sign In
-      </.link>
-      <.link navigate={~p"/"} class="rounded-lg bg-black px-2 py-1 hover:bg-zinc-200/80">
-        Get Started FREE
-      </.link>
+    <div class="md:hidden cursor-pointer">
+      <.icon name="hero-bars-3" />
+      <.icon name="hero-x-mark" class="hidden" />
     </div>
   </div>
 </header>

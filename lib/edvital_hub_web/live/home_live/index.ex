@@ -139,11 +139,37 @@ defmodule EdvitalHubWeb.HomeLive.Index do
 
   defp internship_outline do
     [
-      %{title: "Documentation.", subtitles: []},
-      %{title: "Portfolio Development.", subtitles: []},
-      %{title: "Team Collaboration.", subtitles: []},
-      %{title: "Security Best Practices.", subtitles: []},
-      %{title: "CI/CD Pipeline.", subtitles: []}
+      %{
+        title: "Contribute Code to Production.",
+        subtitles: [
+          "Documentation",
+          "Writing clean, maintainable, and reusable code",
+          "Debugging and Troubleshooting",
+          "CI/CD Pipeline"
+        ]
+      },
+      %{
+        title: "Interview Prep.",
+        subtitles: [
+          "Update Portfolio",
+          "Update Resume",
+          "Update LinkedIn",
+          "CodeWars and LeetCode"
+        ]
+      },
+      %{
+        title: "Team Collaboration.",
+        subtitles: ["Pair programming", "Working with cross-functional teams"]
+      },
+      %{
+        title: "Online Presence.",
+        subtitles: ["Join twitter community", "Stack OverFlow contributions", "Issues on GitHub"]
+      },
+      %{title: "Networking", subtitles: ["Meet established engineers", "Work with peers"]},
+      %{
+        title: "Freelancing and OpenSource",
+        subtitles: ["Learn how to freelance", "Get started with OpenSource"]
+      }
     ]
   end
 
