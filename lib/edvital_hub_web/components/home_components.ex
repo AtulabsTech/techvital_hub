@@ -363,16 +363,17 @@ defmodule EdvitalHubWeb.HomeComponents do
           </.link>
         </div>
       </div>
-      <.mobile_navigation_modal id="mobile_navigation_modal" />
+      <.mobile_navigation_modal id="mobile_navigation_modal" class="md:hidden" />
     </div>
     """
   end
 
   attr :id, :string, required: true
+  attr :class, :string, required: true
 
   defp mobile_navigation_modal(assigns) do
     ~H"""
-    <div id={"#{@id}-container"} class="w-full hidden text-lg">
+    <div id={"#{@id}-container"} class={["w-full hidden text-lg", @class]}>
       <div class="space-y-2 mt-2">
         <div>
           <.link navigate={~p"/"} class="font-semibold leading-6 text-zinc-900 hover:text-zinc-700">
