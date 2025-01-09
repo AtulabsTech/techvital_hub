@@ -17,19 +17,34 @@
     <img src={~p"/images/illustrations/launch.svg"} class="lg:max-w-[600px] lg:max-h-[600px]" />
   </div>
   <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mx-auto max-w-[90%] text-black mb-4">
-    <HomeComponents.course_outline title="Learn" course_outline={@learn_outline}>
+    <HomeComponents.course_outline
+      course_outline={@learn_outline}
+      text="30%"
+      title="Learn"
+      value={30}
+    >
       <div class="h-3 bg-gradient-to-r from-yellow-200 to-yellow-900"></div>
       <div class="flex justify-between">
         <span class="font-bitter">WEEK 1</span><span class="font-bitter">WEEK 16</span>
       </div>
     </HomeComponents.course_outline>
-    <HomeComponents.course_outline title="Build" course_outline={@build_outline}>
+    <HomeComponents.course_outline
+      course_outline={@build_outline}
+      text="70%"
+      title="Build"
+      value={70}
+    >
       <div class="h-3 bg-gradient-to-r from-purple-200 to-purple-900"></div>
       <div class="flex justify-between">
         <span class="font-bitter">WEEK 17</span><span class="font-bitter">WEEK 27</span>
       </div>
     </HomeComponents.course_outline>
-    <HomeComponents.course_outline title="Get Hired" course_outline={internship_outline()}>
+    <HomeComponents.course_outline
+      course_outline={internship_outline()}
+      text="100%"
+      title="Get Hired"
+      value={100}
+    >
       <div class="h-3 bg-gradient-to-r from-green-200 to-green-900"></div>
       <div class="flex justify-between">
         <span class="font-bitter">WEEK 28</span><span class="font-bitter">WEEK 34</span>

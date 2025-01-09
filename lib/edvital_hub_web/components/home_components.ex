@@ -14,6 +14,8 @@ defmodule EdvitalHubWeb.HomeComponents do
 
   attr :title, :string, required: true
   attr :course_outline, :list, required: true
+  attr :text, :string, required: true
+  attr :value, :integer, required: true
 
   slot :inner_block
 
@@ -26,7 +28,31 @@ defmodule EdvitalHubWeb.HomeComponents do
       <span class="block mx-auto mb-5 w-0 h-0 border-l-8 border-r-8 border-t-8 border-t-white border-l-transparent border-r-transparent">
       </span>
       <div class="bg-gray-300 p-4 rounded-md shadow-xl text-md lg:text-lg">
-        <div class="mb-10 h-11 bg-purple-300"></div>
+        <div class="flex items-center justify-around mb-10 bg-purple-300 rounded-lg p-4 shadow-md">
+          <.progress variant="radial" text={@text} value={@value} />
+          <div class="flex items-center w-2/3">
+            <div class={if @title != "Learn", do: "hidden", else: ""}>
+              <h4 class="text-xs">Current Path</h4>
+              <p class="text-sm">Full Stack Functional Software Developer</p>
+            </div>
+            <div class={if @title != "Build", do: "hidden", else: ""}>
+              <h4 class="text-xs">Sample Project</h4>
+              <p class="text-sm">Invoice Generator</p>
+            </div>
+            <div class={
+              if @title != "Get Hired", do: "hidden", else: "flex items-center justify-between"
+            }>
+              <.avatar alt="John Doe" />
+              <div class="ml-4">
+                <div class="flex items-center justify-between space-x-2">
+                  <p class="text-sm">John Doe</p>
+                  <CoreComponents.icon name="hero-check-badge-solid" class="text-blue-500" />
+                </div>
+                <p>Software Developer</p>
+              </div>
+            </div>
+          </div>
+        </div>
         {render_slot(@inner_block)}
         <ul class="p-4 space-y-2">
           <li :for={outline <- @course_outline} class="list-disc p-2 cursor-pointer text-base">
@@ -47,6 +73,89 @@ defmodule EdvitalHubWeb.HomeComponents do
       </div>
     </div>
     """
+  end
+
+  @doc """
+  Avatar components are used to represent a user, and displays the profile picture, initials or fallback icon.
+
+  ## Examples
+
+  ```heex
+  <.avatar src={@src} />
+  ```
+  """
+
+  attr :alt, :string
+  attr :border, :boolean, default: false
+  attr :class, :any, doc: "Extend existing component styles"
+  attr :color, :string, default: "zinc"
+  attr :element, :string, default: "div"
+  attr :rest, :global
+  attr :size, :string, default: "md"
+  attr :src, :string
+  attr :variant, :string, default: "circular", values: ["circular", "rounded", "square"]
+
+  slot :inner_block
+
+  @spec avatar(map()) :: Phoenix.LiveView.Rendered.t()
+  def avatar(assigns) do
+    assigns
+    |> assign(:class, [
+      # Default styles
+      "avatar relative overflow-hidden font-semibold inline-flex items-center justify-center",
+      # Icon default styles
+      "[&_.icon]:absolute [&_.icon]:scale-125 [&_.icon]:top-[15%]",
+      styles(:border, assigns),
+      styles(:color, assigns),
+      styles(:size, assigns),
+      styles(:variant, assigns),
+      assigns[:class]
+    ])
+    |> generate_markup()
+  end
+
+  ### Markup ##########################
+
+  defp generate_markup(%{src: src} = assigns) when not is_nil(src) do
+    ~H"""
+    <img alt={assigns[:alt]} class={@class} src={@src} {@rest} />
+    """
+  end
+
+  defp generate_markup(%{alt: alt, inner_block: []} = assigns) when not is_nil(alt) do
+    ~H"""
+    <.dynamic_tag class={@class} tag_name={@element} {@rest}>
+      {build_initials(@alt)}
+    </.dynamic_tag>
+    """
+  end
+
+  defp generate_markup(%{inner_block: []} = assigns) do
+    ~H"""
+    <.dynamic_tag class={@class} tag_name={@element} {@rest}>
+      <CoreComponents.icon class="icon" name="hero-user-mini" />
+    </.dynamic_tag>
+    """
+  end
+
+  defp generate_markup(assigns) do
+    ~H"""
+    <.dynamic_tag class={@class} tag_name={@element} {@rest}>
+      {render_slot(@inner_block)}
+    </.dynamic_tag>
+    """
+  end
+
+  ### Helpers functions ##########################
+
+  defp build_initials(name) do
+    name
+    |> String.split(" ")
+    |> case do
+      [part1 | [part2 | _]] -> String.slice(part1, 0, 1) <> String.slice(part2, 0, 1)
+      [part] -> String.slice(part, 0, 1)
+    end
+    |> String.upcase()
   end
 
   attr :background, :string, default: nil
@@ -315,6 +424,7 @@ defmodule EdvitalHubWeb.HomeComponents do
     """
   end
 
+  @spec nav_bar(map()) :: Phoenix.LiveView.Rendered.t()
   def nav_bar(assigns) do
     ~H"""
     <div class="md:flex items-center justify-between border-b border-zinc-100 py-6 text-sm md:text-base lg:text-lg">
@@ -355,10 +465,10 @@ defmodule EdvitalHubWeb.HomeComponents do
           </.link>
         </div>
         <div class="hidden md:flex items-center gap-4 font-semibold leading-6 text-white">
-          <.link navigate={~p"/"} class="rounded-lg bg-white text-black px-2 py-1">
+          <.link navigate={~p"/"} class="rounded-lg bg-white text-black p-2 hover:bg-zinc-200/80">
             Sign In
           </.link>
-          <.link navigate={~p"/"} class="rounded-lg bg-black px-2 py-1">
+          <.link navigate={~p"/"} class="rounded-lg bg-black p-2">
             Get Started FREE
           </.link>
         </div>
@@ -367,6 +477,159 @@ defmodule EdvitalHubWeb.HomeComponents do
     </div>
     """
   end
+
+  @doc """
+  A progress component displays the status of a given process.
+
+  ## Examples
+
+  ```heex
+  <.progress variant="radial" />
+  ```
+  """
+
+  attr :class, :any, doc: "Extend existing component styles"
+  attr :color, :string, default: "blue", doc: "The color of the component."
+  attr :rest, :global, doc: "Arbitrary HTML or phx attributes"
+  attr :size, :any, default: "md", doc: "The size of the component"
+  attr :square, :boolean, default: false, doc: "If true, rounded corners are disabled"
+  attr :text, :string, default: nil, doc: "Draws a graphics element consisting of text"
+  attr :value, :integer, default: 30, doc: "The value of the progress indicator"
+  attr :variant, :string, default: "radial", values: ["linear", "radial"]
+
+  @spec progress(map()) :: Phoenix.LiveView.Rendered.t()
+  def progress(%{variant: "radial"} = assigns) do
+    ~H"""
+    <svg
+      aria-hidden="true"
+      class={[
+        "progress block",
+        styles(:color, assigns),
+        styles(:size, assigns),
+        assigns[:class]
+      ]}
+      fill="none"
+      viewBox="0 0 36 36"
+      xmlns="http://www.w3.org/2000/svg"
+      {@rest}
+    >
+      <path
+        class="stroke-zinc-200 dark:stroke-zinc-700"
+        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+        fill="none"
+        stroke-width="3.8"
+      />
+      <path
+        class="stroke-current"
+        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+        fill="none"
+        stroke-dasharray={"#{@value}, 100"}
+        stroke-width="3.8"
+        stroke-linecap={@square == false && "round"}
+      />
+      <text
+        :if={@text}
+        class="fill-zinc-500 dark:fill-zinc-200 text-[0.5em]"
+        text-anchor="middle"
+        x="18"
+        y="20.35"
+      >
+        {@text}
+      </text>
+    </svg>
+    """
+  end
+
+  def progress(assigns) do
+    ~H"""
+    <div
+      class={[
+        "progress w-full h-3 bg-zinc-200 dark:bg-zinc-700 overflow-hidden",
+        styles(:size, assigns),
+        styles(:square, assigns),
+        assigns[:class]
+      ]}
+      {@rest}
+    >
+      <div
+        class={[
+          "h-3 flex items-center justify-center p-0.5 leading-none",
+          styles(:color, assigns),
+          styles(:size, assigns),
+          styles(:square, assigns)
+        ]}
+        style={"width: #{@value}%"}
+      >
+        <span :if={@text && @value > 0}>{@text}</span>
+      </div>
+    </div>
+    """
+  end
+
+  ### Styles ##########################
+
+  # Color
+  defp styles(:color, %{color: "blue", variant: "linear"}), do: "bg-blue-500 text-blue-100"
+  defp styles(:color, %{color: "green", variant: "linear"}), do: "bg-green-500 text-green-100"
+  defp styles(:color, %{color: "red", variant: "linear"}), do: "bg-red-500 text-red-100"
+
+  defp styles(:color, %{color: "blue", variant: "radial"}), do: "text-blue-500"
+  defp styles(:color, %{color: "green", variant: "radial"}), do: "text-green-500"
+  defp styles(:color, %{color: "red", variant: "radial"}), do: "text-red-500"
+
+  # Size
+  defp styles(:size, %{size: "sm", variant: "linear"}), do: "h-3.5 text-xs"
+  defp styles(:size, %{size: "md", variant: "linear"}), do: "h-5 text-sm font-semibold"
+  defp styles(:size, %{size: "lg", variant: "linear"}), do: "h-7 text-base font-medium"
+
+  defp styles(:size, %{size: "sm", variant: "radial"}), do: "h-8 w-8 text-sm"
+  defp styles(:size, %{size: "md", variant: "radial"}), do: "h-12 w-12 text-sm"
+  defp styles(:size, %{size: "lg", variant: "radial"}), do: "h-16 w-16 text-sm"
+
+  # Square
+  defp styles(:square, %{square: false}), do: "rounded-full"
+
+  # Border
+  defp styles(:border, %{border: true}), do: "ring-2 ring-white"
+
+  # Color
+  defp styles(:color, %{color: "blue"}) do
+    "bg-blue-300 text-blue-600 dark:bg-blue-600 dark:text-blue-200"
+  end
+
+  defp styles(:color, %{color: "green"}) do
+    "bg-green-300 text-green-600 dark:bg-green-600 dark:text-green-200"
+  end
+
+  defp styles(:color, %{color: "orange"}) do
+    "bg-orange-300 text-orange-600 dark:bg-orange-600 dark:text-orange-200"
+  end
+
+  defp styles(:color, %{color: "red"}) do
+    "bg-red-300 text-red-600 dark:bg-red-600 dark:text-red-200"
+  end
+
+  defp styles(:color, %{color: "yellow"}) do
+    "bg-yellow-300 text-yellow-600 dark:bg-yellow-600 dark:text-yellow-200"
+  end
+
+  defp styles(:color, %{color: _color}) do
+    "bg-zinc-300 text-zinc-600 dark:bg-zinc-600 dark:text-zinc-200"
+  end
+
+  # Size
+  defp styles(:size, %{size: "xs"}), do: "[&_.icon]:w-6 [&_.icon]:h-6 w-6 h-6 text-xs"
+  defp styles(:size, %{size: "sm"}), do: "[&_.icon]:w-8 [&_.icon]:h-8 w-8 h-8 text-xs"
+  defp styles(:size, %{size: "md"}), do: "[&_.icon]:w-10 [&_.icon]:h-10 w-10 h-10 text-base"
+  defp styles(:size, %{size: "lg"}), do: "[&_.icon]:w-12 [&_.icon]:h-12 w-12 h-12 text-lg"
+  defp styles(:size, %{size: "xl"}), do: "[&_.icon]:w-14 [&_.icon]:h-14 w-14 h-14 text-xl"
+  defp styles(:size, %{size: override}), do: override
+
+  # Variant
+  defp styles(:variant, %{variant: "circular"}), do: "rounded-full"
+  defp styles(:variant, %{variant: "rounded"}), do: "rounded"
+
+  defp styles(_rule_group, _assigns), do: nil
 
   attr :id, :string, required: true
   attr :class, :string, required: true
