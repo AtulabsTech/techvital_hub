@@ -315,6 +315,96 @@ defmodule EdvitalHubWeb.HomeComponents do
     """
   end
 
+  def nav_bar(assigns) do
+    ~H"""
+    <div class="md:flex items-center justify-between border-b border-zinc-100 py-6 text-sm md:text-base lg:text-lg">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <a href="/">
+            <img src={~p"/images/default.svg"} width="46" />
+          </a>
+          <p class="bg-brand/5 text-brand rounded-full px-2 font-medium leading-6 text-4xl md:text-2xl lg:text-4xl">
+            Edvital Hub
+          </p>
+        </div>
+        <div
+          id="hamburger"
+          phx-hook="MobileNav"
+          class="md:hidden cursor-pointer hover:bg-zinc-200/80 rounded-lg p-2"
+        >
+          <CoreComponents.icon id="show-nav" name="hero-bars-3" />
+          <CoreComponents.icon id="hide-nav" name="hero-chevron-up" class="hidden" />
+        </div>
+      </div>
+      <div class="flex items-center justify-between md:space-x-10 lg:space-x-20">
+        <div class="hidden md:block">
+          <.link navigate={~p"/"} class="font-semibold leading-6 text-zinc-900 hover:text-zinc-700">
+            About Us
+          </.link>
+          <.link
+            navigate={~p"/"}
+            class="ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
+          >
+            Blog
+          </.link>
+          <.link
+            navigate={~p"/"}
+            class="ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
+          >
+            Contact Us
+          </.link>
+        </div>
+        <div class="hidden md:flex items-center gap-4 font-semibold leading-6 text-white">
+          <.link navigate={~p"/"} class="rounded-lg bg-white text-black px-2 py-1">
+            Sign In
+          </.link>
+          <.link navigate={~p"/"} class="rounded-lg bg-black px-2 py-1">
+            Get Started FREE
+          </.link>
+        </div>
+      </div>
+      <.mobile_navigation_modal id="mobile_navigation_modal" />
+    </div>
+    """
+  end
+
+  attr :id, :string, required: true
+
+  defp mobile_navigation_modal(assigns) do
+    ~H"""
+    <div id={"#{@id}-container"} class="w-full hidden text-lg">
+      <div class="space-y-2 mt-2">
+        <div>
+          <.link navigate={~p"/"} class="font-semibold leading-6 text-zinc-900 hover:text-zinc-700">
+            About Us
+          </.link>
+        </div>
+        <div>
+          <.link navigate={~p"/"} class="font-semibold leading-6 text-zinc-900 hover:text-zinc-700">
+            Blog
+          </.link>
+        </div>
+        <div>
+          <.link navigate={~p"/"} class="font-semibold leading-6 text-zinc-900 hover:text-zinc-700">
+            Contact Us
+          </.link>
+        </div>
+        <div class="flex items-center gap-4 font-semibold leading-6 text-white text-center">
+          <.link
+            navigate={~p"/"}
+            class="rounded-lg w-1/2 bg-white text-black py-3 hover:bg-zinc-200/80"
+          >
+            Sign In
+          </.link>
+          <.link navigate={~p"/"} class="rounded-lg bg-black w-1/2 px-2 py-3">
+            Get Started FREE
+          </.link>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
   defp trigger_id(id, idx), do: "#{id}_trigger#{idx}"
   defp panel_id(id, idx), do: "#{id}_panel#{idx}"
 
