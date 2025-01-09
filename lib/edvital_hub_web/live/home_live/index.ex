@@ -133,6 +133,14 @@ defmodule EdvitalHubWeb.HomeLive.Index do
           "API token-based authentication (Guardian, Pow)",
           "Preventing CSRF, XSS, and SQL injection"
         ]
+      },
+      %{
+        title: "Build a Fullstack App.",
+        subtitles: [
+          "Design",
+          "Implement",
+          "Deploy"
+        ]
       }
     ]
   end
