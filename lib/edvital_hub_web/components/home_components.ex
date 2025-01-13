@@ -164,11 +164,13 @@ defmodule EdvitalHubWeb.HomeComponents do
   def call_to_action(assigns) do
     ~H"""
     <div class={[
-      "flex mx-auto px-4 text-black items-center justify-between bg-#{@background}-300 md:max-w-[60%] rounded-lg my-4 shadow-lg"
+      "flex mx-auto px-2 md:px-4 text-black text-sm md:text-2xl lg:text-3xl items-center justify-between bg-#{@background}-300 md:max-w-[80%] lg:max-w-[60%] rounded-lg my-2 md:my-4 shadow-lg"
     ]}>
-      <h3 class="font-bold hidden sm:block text-lg md:text-2xl lg:text-3xl">{@call_to_action}</h3>
+      <h3 class="font-bold">{@call_to_action}</h3>
       <.link navigate={~p"/"}>
-        <button class="m-4 p-4 bg-black text-white rounded-lg">Let's Get Started &rarr;</button>
+        <button class="m-2 md:m-4 p-2 md:p-4 bg-black text-white rounded-lg">
+          Let's Get Started &rarr;
+        </button>
       </.link>
     </div>
     """
