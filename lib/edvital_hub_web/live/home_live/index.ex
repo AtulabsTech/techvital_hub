@@ -9,6 +9,7 @@ defmodule EdvitalHubWeb.HomeLive.Index do
   def mount(_params, _session, socket) do
     {:ok,
      socket
+     |> assign(page_title: "Home")
      |> assign(build_outline: build_outline())
      |> assign(learn_outline: learn_outline())}
   end
