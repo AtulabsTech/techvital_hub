@@ -9,7 +9,7 @@ import Config
 
 config :edvital_hub,
   ecto_repos: [EdvitalHub.Repo],
-  generators: [timestamp_type: :utc_datetime]
+  generators: [timestamp_type: :utc_datetime, binary_id: true]
 
 # Configures the endpoint
 config :edvital_hub, EdvitalHubWeb.Endpoint,
