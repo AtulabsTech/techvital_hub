@@ -10,13 +10,18 @@
       <button class="p-2 border-2 rounded-lg mr-2 bg-yellow-300 text-green-600">
         Get Started
       </button>
-      <button class="p-2 border-2 rounded-lg border-yellow-300 text-yellow-300">
-        Explore Programs
-      </button>
+      <a href="#programs">
+        <button class="p-2 border-2 rounded-lg border-yellow-300 text-yellow-300">
+          Explore Programs
+        </button>
+      </a>
     </section>
     <img src={~p"/images/illustrations/launch.svg"} class="lg:max-w-[600px] lg:max-h-[600px]" />
   </div>
-  <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mx-auto max-w-[90%] text-black mb-4">
+  <section
+    id="programs"
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mx-auto max-w-[90%] text-black mb-4"
+  >
     <HomeComponents.course_outline
       course_outline={@learn_outline}
       text="30%"
