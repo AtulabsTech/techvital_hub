@@ -1,4 +1,7 @@
 defmodule EdvitalHub.Accounts.UserToken do
+  @moduledoc """
+  A user token struct and functions.
+  """
   use Ecto.Schema
   import Ecto.Query
   alias EdvitalHub.Accounts.UserToken

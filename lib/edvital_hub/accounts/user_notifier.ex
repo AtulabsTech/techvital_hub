@@ -1,4 +1,5 @@
 defmodule EdvitalHub.Accounts.UserNotifier do
+  @moduledoc false
   import Swoosh.Email
 
   alias EdvitalHub.Mailer

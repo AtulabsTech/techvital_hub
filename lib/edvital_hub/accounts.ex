@@ -6,7 +6,7 @@ defmodule EdvitalHub.Accounts do
   import Ecto.Query, warn: false
   alias EdvitalHub.Repo
 
-  alias EdvitalHub.Accounts.{User, UserToken, UserNotifier}
+  alias EdvitalHub.Accounts.{User, UserNotifier, UserToken}
 
   ## Database getters
 
