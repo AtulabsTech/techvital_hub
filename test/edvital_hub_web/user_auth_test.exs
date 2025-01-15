@@ -1,9 +1,10 @@
 defmodule EdvitalHubWeb.UserAuthTest do
   use EdvitalHubWeb.ConnCase, async: true
 
-  alias Phoenix.LiveView
   alias EdvitalHub.Accounts
   alias EdvitalHubWeb.UserAuth
+  alias Phoenix.LiveView
+
   import EdvitalHub.AccountsFixtures
 
   @remember_me_cookie "_edvital_hub_web_user_remember_me"
