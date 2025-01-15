@@ -1,4 +1,8 @@
 defmodule EdvitalHubWeb.UserAuth do
+  @moduledoc """
+  User authentication helpers.
+  """
+
   use EdvitalHubWeb, :verified_routes
 
   import Plug.Conn
@@ -225,5 +229,5 @@ defmodule EdvitalHubWeb.UserAuth do
 
   defp maybe_store_return_to(conn), do: conn
 
-  defp signed_in_path(_conn), do: ~p"/"
+  defp signed_in_path(_conn), do: ~p"/dashboard"
 end
