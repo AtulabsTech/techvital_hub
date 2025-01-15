@@ -57,7 +57,7 @@ defmodule EdvitalHubWeb.UserConfirmationLiveTest do
       # when logged in
       conn =
         build_conn()
-        |> login_user(user)
+        |> log_in_user(user)
 
       {:ok, lv, _html} = live(conn, ~p"/confirm/#{token}")
 

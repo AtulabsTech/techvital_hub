@@ -8,17 +8,17 @@ defmodule EdvitalHubWeb.UserLoginLiveTest do
     test "renders log in page", %{conn: conn} do
       {:ok, _lv, html} = live(conn, ~p"/login")
 
-      assert html =~ "Log in"
-      assert html =~ "Register"
+      assert html =~ "Sign In"
+      assert html =~ "Get Started FREE"
       assert html =~ "Forgot your password?"
     end
 
     test "redirects if already logged in", %{conn: conn} do
       result =
         conn
-        |> login_user(user_fixture())
+        |> log_in_user(user_fixture())
         |> live(~p"/login")
-        |> follow_redirect(conn, "/")
+        |> follow_redirect(conn, "/dashboard")
 
       assert {:ok, _conn} = result
     end
@@ -36,7 +36,7 @@ defmodule EdvitalHubWeb.UserLoginLiveTest do
 
       conn = submit_form(form, conn)
 
-      assert redirected_to(conn) == ~p"/"
+      assert redirected_to(conn) == ~p"/dashboard"
     end
 
     test "redirects to login page with a flash error if there are no valid credentials", %{

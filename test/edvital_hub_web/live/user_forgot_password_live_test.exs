@@ -19,9 +19,9 @@ defmodule EdvitalHubWeb.UserForgotPasswordLiveTest do
     test "redirects if already logged in", %{conn: conn} do
       result =
         conn
-        |> login_user(user_fixture())
+        |> log_in_user(user_fixture())
         |> live(~p"/reset_password")
-        |> follow_redirect(conn, ~p"/")
+        |> follow_redirect(conn, ~p"/dashboard")
 
       assert {:ok, _conn} = result
     end
