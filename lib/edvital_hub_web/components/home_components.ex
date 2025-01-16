@@ -524,17 +524,17 @@ defmodule EdvitalHubWeb.HomeComponents do
               </.link>
             </div>
             <div class="hover:bg-gray-200 p-2 rounded-lg">
+              <.link href={~p"/settings"} class="leading-6 text-zinc-900">
+                Settings
+              </.link>
+            </div>
+            <div class="hover:bg-gray-200 p-2 rounded-lg">
               <.link
                 href={~p"/logout"}
                 method="delete"
                 class="leading-6 text-zinc-900 hover:text-zinc-700"
               >
                 Log out
-              </.link>
-            </div>
-            <div class="hover:bg-gray-200 p-2 rounded-lg">
-              <.link href={~p"/settings"} class="leading-6 text-zinc-900">
-                Settings
               </.link>
             </div>
           </div>
