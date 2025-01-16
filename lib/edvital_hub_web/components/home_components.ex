@@ -429,53 +429,122 @@ defmodule EdvitalHubWeb.HomeComponents do
   @spec nav_bar(map()) :: Phoenix.LiveView.Rendered.t()
   def nav_bar(assigns) do
     ~H"""
-    <div class="md:flex items-center justify-between border-b border-zinc-100 py-6 text-sm md:text-base lg:text-lg">
+    <div class={
+      if @current_user == nil,
+        do:
+          "md:flex items-center justify-between border-b border-zinc-100 py-4 text-sm md:text-base lg:text-lg font-maven",
+        else:
+          "flex items center justify-between border-b border-zinc-100 py-4 text-sm md:text-base lg:text-lg font-maven"
+    }>
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-4">
           <a href="/">
             <img src={~p"/images/default.svg"} width="46" />
           </a>
-          <p class="bg-brand/5 text-brand rounded-full px-2 font-medium leading-6 text-4xl md:text-2xl lg:text-4xl">
+          <p class="text-brand rounded-full px-2 font-medium leading-6 text-4xl md:text-2xl lg:text-4xl">
             Edvital Hub
           </p>
         </div>
         <div
           id="hamburger"
           phx-hook="MobileNav"
-          class="md:hidden cursor-pointer hover:bg-zinc-200/80 rounded-lg p-2"
+          class={
+            if @current_user == nil,
+              do: "md:hidden cursor-pointer hover:bg-zinc-200/80 rounded-lg p-2",
+              else: "hidden"
+          }
         >
           <CoreComponents.icon id="show-nav" name="hero-bars-3" />
           <CoreComponents.icon id="hide-nav" name="hero-chevron-up" class="hidden" />
         </div>
       </div>
-      <div class="flex items-center justify-between md:space-x-10 lg:space-x-20">
-        <div class="hidden md:block">
-          <.link navigate={~p"/"} class="font-semibold leading-6 text-zinc-900 hover:text-zinc-700">
-            About Us
-          </.link>
-          <.link
-            navigate={~p"/"}
-            class="ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
-          >
-            Blog
-          </.link>
-          <.link
-            navigate={~p"/"}
-            class="ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
-          >
-            Contact Us
-          </.link>
+      <ul class="relative hidden md:flex z-10 items-center justify-between md:space-x-10 lg:space-x-20">
+        <%= if @current_user do %>
+          <li class="font-semibold leading-6 text-zinc-900 hover:text-zinc-700">
+            <.user_profile_toggler current_user={@current_user} />
+          </li>
+        <% else %>
+          <ul class="hidden md:flex">
+            <li>
+              <.link href={~p"/"} class="font-semibold leading-6 text-zinc-900 hover:text-zinc-700">
+                About Us
+              </.link>
+            </li>
+            <li>
+              <.link
+                href={~p"/"}
+                class="ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
+              >
+                Blog
+              </.link>
+            </li>
+            <li>
+              <.link
+                href={~p"/"}
+                class="ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
+              >
+                Contact Us
+              </.link>
+            </li>
+          </ul>
+          <ul class="hidden md:flex items-center gap-4 font-semibold leading-6 text-white">
+            <li>
+              <.link
+                href={~p"/login"}
+                class="rounded-lg bg-white border border-black text-black p-2 hover:bg-zinc-200/80"
+              >
+                Sign In
+              </.link>
+            </li>
+            <li>
+              <.link href={~p"/register"} class="rounded-lg bg-black p-2">
+                Get Started FREE
+              </.link>
+            </li>
+          </ul>
+        <% end %>
+      </ul>
+      <%= if @current_user != nil do %>
+        <div
+          id="profile-modal"
+          class="absolute hidden right-2 z-50 top-20 bg-white rounded-lg shadow-lg px-6 py-4 w-[320px]"
+          phx-click-away={toggle_profile_modal()}
+        >
+          <div class="flex items-center justify-between space-y-4">
+            <.avatar class="cursor-pointer" alt="John Doe" />
+            <div class="flex flex-col text-right">
+              <span>John Doe</span>
+              <span>{@current_user.email}</span>
+            </div>
+          </div>
+          <div class="flex flex-col mt-4 space-y-2">
+            <div class="hover:bg-gray-200 p-2 rounded-lg">
+              <.link navigate={~p"/dashboard"} class="leading-6 text-zinc-900">
+                Your Journey
+              </.link>
+            </div>
+            <div class="hover:bg-gray-200 p-2 rounded-lg">
+              <.link
+                href={~p"/logout"}
+                method="delete"
+                class="leading-6 text-zinc-900 hover:text-zinc-700"
+              >
+                Log out
+              </.link>
+            </div>
+            <div class="hover:bg-gray-200 p-2 rounded-lg">
+              <.link href={~p"/settings"} class="leading-6 text-zinc-900">
+                Settings
+              </.link>
+            </div>
+          </div>
         </div>
-        <div class="hidden md:flex items-center gap-4 font-semibold leading-6 text-white">
-          <.link navigate={~p"/"} class="rounded-lg bg-white text-black p-2 hover:bg-zinc-200/80">
-            Sign In
-          </.link>
-          <.link navigate={~p"/"} class="rounded-lg bg-black p-2">
-            Get Started FREE
-          </.link>
-        </div>
-      </div>
-      <.mobile_navigation_modal id="mobile_navigation_modal" class="md:hidden" />
+      <% end %>
+      <.mobile_navigation_modal
+        id="mobile_navigation_modal"
+        class="md:hidden"
+        current_user={@current_user}
+      />
     </div>
     """
   end
@@ -633,39 +702,68 @@ defmodule EdvitalHubWeb.HomeComponents do
 
   defp styles(_rule_group, _assigns), do: nil
 
+  attr :current_user, :map
   attr :id, :string, required: true
   attr :class, :string, required: true
 
   defp mobile_navigation_modal(assigns) do
     ~H"""
-    <div id={"#{@id}-container"} class={["w-full hidden text-lg", @class]}>
-      <div class="space-y-2 mt-2">
-        <div>
-          <.link navigate={~p"/"} class="font-semibold leading-6 text-zinc-900 hover:text-zinc-700">
-            About Us
-          </.link>
-        </div>
-        <div>
-          <.link navigate={~p"/"} class="font-semibold leading-6 text-zinc-900 hover:text-zinc-700">
-            Blog
-          </.link>
-        </div>
-        <div>
-          <.link navigate={~p"/"} class="font-semibold leading-6 text-zinc-900 hover:text-zinc-700">
-            Contact Us
-          </.link>
-        </div>
-        <div class="flex items-center gap-4 font-semibold leading-6 text-white text-center">
-          <.link
-            navigate={~p"/"}
-            class="rounded-lg w-1/2 bg-white text-black py-3 hover:bg-zinc-200/80"
-          >
-            Sign In
-          </.link>
-          <.link navigate={~p"/"} class="rounded-lg bg-black w-1/2 px-2 py-3">
-            Get Started FREE
-          </.link>
-        </div>
+    <div id={"#{@id}-container"} class={["text-lg", @current_user == nil && "hidden", @class]}>
+      <ul class="z-10 items-center justify-between md:space-x-10 lg:space-x-20">
+        <%= if @current_user do %>
+          <li class="font-semibold leading-6 text-zinc-900 hover:text-zinc-700">
+            <.user_profile_toggler current_user={@current_user} />
+          </li>
+        <% else %>
+          <div class="space-y-2 mt-2">
+            <div>
+              <.link
+                navigate={~p"/"}
+                class="font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
+              >
+                About Us
+              </.link>
+            </div>
+            <div>
+              <.link
+                navigate={~p"/"}
+                class="font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
+              >
+                Blog
+              </.link>
+            </div>
+            <div>
+              <.link
+                navigate={~p"/"}
+                class="font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
+              >
+                Contact Us
+              </.link>
+            </div>
+            <div class="flex items-center gap-4 font-semibold leading-6 text-white text-center">
+              <.link
+                navigate={~p"/login"}
+                class="rounded-lg w-1/2 bg-white text-black py-3 hover:bg-zinc-200/80"
+              >
+                Sign In
+              </.link>
+              <.link navigate={~p"/register"} class="rounded-lg bg-black w-1/2 px-2 py-3">
+                Get Started FREE
+              </.link>
+            </div>
+          </div>
+        <% end %>
+      </ul>
+    </div>
+    """
+  end
+
+  defp user_profile_toggler(assigns) do
+    ~H"""
+    <div>
+      <div class="cursor-pointer" phx-click={toggle_profile_modal()}>
+        <.avatar alt="John Doe" />
+        <CoreComponents.icon name="hero-ellipsis-vertical" class="h-8 w-8 text-zinc-900" />
       </div>
     </div>
     """
@@ -691,5 +789,18 @@ defmodule EdvitalHubWeb.HomeComponents do
     else
       op
     end
+  end
+
+  defp toggle_profile_modal(js \\ %JS{}) do
+    js
+    |> JS.toggle(
+      to: "#profile-modal",
+      in:
+        {"transition-all transform ease-out duration-300", "opacity-0 translate-y-2",
+         "opacity-100 translate-y-0"},
+      out:
+        {"transition-all transform ease-in duration-200", "opacity-100 translate-y-0",
+         "opacity-0 translate-y-2"}
+    )
   end
 end
