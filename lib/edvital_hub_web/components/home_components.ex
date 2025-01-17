@@ -511,13 +511,21 @@ defmodule EdvitalHubWeb.HomeComponents do
           phx-click-away={toggle_profile_modal()}
         >
           <div class="flex items-center justify-between space-y-4">
-            <.avatar class="cursor-pointer" alt="John Doe" />
+            <.avatar
+              class="cursor-pointer"
+              alt={"#{@current_user.first_name} " <> "#{@current_user.last_name}"}
+            />
             <div class="flex flex-col text-right">
-              <span>John Doe</span>
+              <span>{@current_user.first_name} {@current_user.last_name}</span>
               <span>{@current_user.email}</span>
             </div>
           </div>
-          <div class="flex flex-col mt-4 space-y-2">
+          <div class="flex flex-col mt-4 space-y-1">
+            <div class="hover:bg-gray-200 p-2 rounded-lg">
+              <.link navigate={~p"/dashboard"} class="leading-6 text-zinc-900">
+                Dashboard
+              </.link>
+            </div>
             <div class="hover:bg-gray-200 p-2 rounded-lg">
               <.link navigate={~p"/dashboard"} class="leading-6 text-zinc-900">
                 Your Journey
@@ -762,7 +770,7 @@ defmodule EdvitalHubWeb.HomeComponents do
     ~H"""
     <div>
       <div class="cursor-pointer" phx-click={toggle_profile_modal()}>
-        <.avatar alt="John Doe" />
+        <.avatar alt={"#{@current_user.first_name} " <> "#{@current_user.last_name}"} />
         <CoreComponents.icon name="hero-ellipsis-vertical" class="h-8 w-8 text-zinc-900" />
       </div>
     </div>

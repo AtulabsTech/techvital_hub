@@ -9,6 +9,8 @@ defmodule EdvitalHub.Accounts.User do
   @foreign_key_type :binary_id
   schema "users" do
     field :email, :string
+    field :first_name, :string
+    field :last_name, :string
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
     field :current_password, :string, virtual: true, redact: true
@@ -42,7 +44,8 @@ defmodule EdvitalHub.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password])
+    |> cast(attrs, [:email, :first_name, :last_name, :password])
+    |> validate_required([:email, :first_name, :last_name, :password])
     |> validate_email(opts)
     |> validate_password(opts)
   end
