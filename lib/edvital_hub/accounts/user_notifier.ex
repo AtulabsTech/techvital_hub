@@ -22,17 +22,18 @@ defmodule EdvitalHub.Accounts.UserNotifier do
   Deliver instructions to confirm account.
   """
   def deliver_confirmation_instructions(user, url) do
-    deliver(user.email, "Confirmation instructions", """
+    deliver(user.email, "Confirm your EdvitalHub Account", """
 
     ==============================
 
-    Hi #{user.email},
+    Hi #{user.first_name},
 
-    You can confirm your account by visiting the URL below:
+    Welcome to EdvitalHub! To complete your registration and access your account,
+    please confirm your email address by clicking the link below:
 
     #{url}
 
-    If you didn't create an account with us, please ignore this.
+    If you didn't create an account with us, please ignore this email.
 
     ==============================
     """)

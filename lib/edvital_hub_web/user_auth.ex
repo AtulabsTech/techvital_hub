@@ -30,14 +30,20 @@ defmodule EdvitalHubWeb.UserAuth do
   if you are not using LiveView.
   """
   def log_in_user(conn, user, params \\ %{}) do
-    token = Accounts.generate_user_session_token(user)
-    user_return_to = get_session(conn, :user_return_to)
+    if user.confirmed_at do
+      token = Accounts.generate_user_session_token(user)
+      user_return_to = get_session(conn, :user_return_to)
 
-    conn
-    |> renew_session()
-    |> put_token_in_session(token)
-    |> maybe_write_remember_me_cookie(token, params)
-    |> redirect(to: user_return_to || signed_in_path(conn))
+      conn
+      |> renew_session()
+      |> put_token_in_session(token)
+      |> maybe_write_remember_me_cookie(token, params)
+      |> redirect(to: user_return_to || signed_in_path(conn))
+    else
+      conn
+      |> put_flash(:error, "You must confirm your email address before logging in")
+      |> redirect(to: ~p"/login")
+    end
   end
 
   defp maybe_write_remember_me_cookie(conn, token, %{"remember_me" => "true"}) do
@@ -207,6 +213,15 @@ defmodule EdvitalHubWeb.UserAuth do
   """
   def require_authenticated_user(conn, _opts) do
     if conn.assigns[:current_user] do
+      if conn.assigns.current_user.confirmed_at do
+        conn
+      else
+        conn
+        |> put_flash(:error, "You must confirm your email address to access this page")
+        |> redirect(to: ~p"/")
+        |> halt()
+      end
+
       conn
     else
       conn
