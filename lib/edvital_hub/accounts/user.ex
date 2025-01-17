@@ -52,7 +52,6 @@ defmodule EdvitalHub.Accounts.User do
 
   defp validate_email(changeset, opts) do
     changeset
-    |> validate_required([:email])
     |> validate_format(:email, ~r/^[^\s]+@[^\s]+$/, message: "must have the @ sign and no spaces")
     |> validate_length(:email, max: 160)
     |> maybe_validate_unique_email(opts)
@@ -60,12 +59,15 @@ defmodule EdvitalHub.Accounts.User do
 
   defp validate_password(changeset, opts) do
     changeset
-    |> validate_required([:password])
-    |> validate_length(:password, min: 12, max: 72)
-    # Examples of additional password validation:
-    # |> validate_format(:password, ~r/[a-z]/, message: "at least one lower case character")
-    # |> validate_format(:password, ~r/[A-Z]/, message: "at least one upper case character")
-    # |> validate_format(:password, ~r/[!?@#$%^&*_0-9]/, message: "at least one digit or punctuation character")
+    |> validate_length(:password, min: 8, message: "must be at least 8+ characters")
+    |> validate_length(:password, max: 72, message: "at most 72 character(s)")
+    |> validate_format(:password, ~r/[0-9]/, message: "must have at least 1 digit")
+    |> validate_format(:password, ~r/[A-Z]/,
+      message: "must have at least one upper-case character"
+    )
+    |> validate_format(:password, ~r/[!?@#$%^&*_]/,
+      message: "must have at least one special character (*#$%&!-@)"
+    )
     |> maybe_hash_password(opts)
   end
 

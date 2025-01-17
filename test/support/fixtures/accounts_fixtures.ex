@@ -10,6 +10,8 @@ defmodule EdvitalHub.AccountsFixtures do
   def valid_user_attributes(attrs \\ %{}) do
     Enum.into(attrs, %{
       email: unique_user_email(),
+      first_name: "John",
+      last_name: "Doe",
       password: valid_user_password()
     })
   end
