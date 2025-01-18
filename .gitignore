@@ -43,4 +43,5 @@ npm-debug.log
 .env
 package.json
 package-lock.json
+.vscode/
 

@@ -20,7 +20,8 @@ defmodule EdvitalHubWeb.UserAuthTest do
 
   describe "log_in_user/3" do
     test "stores the user token in the session", %{conn: conn, user: user} do
-      conn = UserAuth.log_in_user(conn, user)
+      confirmed_user = %{user | confirmed_at: NaiveDateTime.utc_now()}
+      conn = UserAuth.log_in_user(conn, confirmed_user)
       assert token = get_session(conn, :user_token)
       assert get_session(conn, :live_socket_id) == "users_sessions:#{Base.url_encode64(token)}"
       assert redirected_to(conn) == ~p"/dashboard"
@@ -28,17 +29,28 @@ defmodule EdvitalHubWeb.UserAuthTest do
     end
 
     test "clears everything previously stored in the session", %{conn: conn, user: user} do
-      conn = conn |> put_session(:to_be_removed, "value") |> UserAuth.log_in_user(user)
+      confirmed_user = %{user | confirmed_at: NaiveDateTime.utc_now()}
+      conn = conn |> put_session(:to_be_removed, "value") |> UserAuth.log_in_user(confirmed_user)
       refute get_session(conn, :to_be_removed)
     end
 
     test "redirects to the configured path", %{conn: conn, user: user} do
-      conn = conn |> put_session(:user_return_to, "/hello") |> UserAuth.log_in_user(user)
+      confirmed_user = %{user | confirmed_at: NaiveDateTime.utc_now()}
+
+      conn =
+        conn |> put_session(:user_return_to, "/hello") |> UserAuth.log_in_user(confirmed_user)
+
       assert redirected_to(conn) == "/hello"
     end
 
     test "writes a cookie if remember_me is configured", %{conn: conn, user: user} do
-      conn = conn |> fetch_cookies() |> UserAuth.log_in_user(user, %{"remember_me" => "true"})
+      confirmed_user = %{user | confirmed_at: NaiveDateTime.utc_now()}
+
+      conn =
+        conn
+        |> fetch_cookies()
+        |> UserAuth.log_in_user(confirmed_user, %{"remember_me" => "true"})
+
       assert get_session(conn, :user_token) == conn.cookies[@remember_me_cookie]
 
       assert %{value: signed_token, max_age: max_age} = conn.resp_cookies[@remember_me_cookie]
@@ -92,8 +104,12 @@ defmodule EdvitalHubWeb.UserAuthTest do
     end
 
     test "authenticates user from cookies", %{conn: conn, user: user} do
+      confirmed_user = %{user | confirmed_at: NaiveDateTime.utc_now()}
+
       logged_in_conn =
-        conn |> fetch_cookies() |> UserAuth.log_in_user(user, %{"remember_me" => "true"})
+        conn
+        |> fetch_cookies()
+        |> UserAuth.log_in_user(confirmed_user, %{"remember_me" => "true"})
 
       user_token = logged_in_conn.cookies[@remember_me_cookie]
       %{value: signed_token} = logged_in_conn.resp_cookies[@remember_me_cookie]
@@ -103,7 +119,7 @@ defmodule EdvitalHubWeb.UserAuthTest do
         |> put_req_cookie(@remember_me_cookie, signed_token)
         |> UserAuth.fetch_current_user([])
 
-      assert conn.assigns.current_user.id == user.id
+      assert conn.assigns.current_user.id == confirmed_user.id
       assert get_session(conn, :user_token) == user_token
 
       assert get_session(conn, :live_socket_id) ==
@@ -265,7 +281,11 @@ defmodule EdvitalHubWeb.UserAuthTest do
     end
 
     test "does not redirect if user is authenticated", %{conn: conn, user: user} do
-      conn = conn |> assign(:current_user, user) |> UserAuth.require_authenticated_user([])
+      confirmed_user = %{user | confirmed_at: NaiveDateTime.utc_now()}
+
+      conn =
+        conn |> assign(:current_user, confirmed_user) |> UserAuth.require_authenticated_user([])
+
       refute conn.halted
       refute conn.status
     end

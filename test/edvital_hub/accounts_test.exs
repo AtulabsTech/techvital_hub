@@ -59,11 +59,16 @@ defmodule EdvitalHub.AccountsTest do
     end
 
     test "validates email and password when given" do
-      {:error, changeset} = Accounts.register_user(%{email: "not valid", password: "not valid"})
+      {:error, changeset} = Accounts.register_user(%{email: "not valid", password: "invalid"})
 
       assert %{
                email: ["must have the @ sign and no spaces"],
-               password: ["should be at least 12 character(s)"]
+               password: [
+                 "must have at least one special character (*#$%&!-@)",
+                 "must have at least one upper-case character",
+                 "must have at least 1 digit",
+                 "at least 8+ characters"
+               ]
              } = errors_on(changeset)
     end
 
@@ -71,7 +76,7 @@ defmodule EdvitalHub.AccountsTest do
       too_long = String.duplicate("db", 100)
       {:error, changeset} = Accounts.register_user(%{email: too_long, password: too_long})
       assert "should be at most 160 character(s)" in errors_on(changeset).email
-      assert "should be at most 72 character(s)" in errors_on(changeset).password
+      assert "at most 72 character(s)" in errors_on(changeset).password
     end
 
     test "validates email uniqueness" do
@@ -97,7 +102,7 @@ defmodule EdvitalHub.AccountsTest do
   describe "change_user_registration/2" do
     test "returns a changeset" do
       assert %Ecto.Changeset{} = changeset = Accounts.change_user_registration(%User{})
-      assert changeset.required == [:password, :email]
+      assert changeset.required == [:password, :email, :first_name, :last_name]
     end
 
     test "allows fields to be set" do
@@ -245,11 +250,11 @@ defmodule EdvitalHub.AccountsTest do
     test "allows fields to be set" do
       changeset =
         Accounts.change_user_password(%User{}, %{
-          "password" => "new valid password"
+          "password" => "NewValidPass@123!"
         })
 
       assert changeset.valid?
-      assert get_change(changeset, :password) == "new valid password"
+      assert get_change(changeset, :password) == "NewValidPass@123!"
       assert is_nil(get_change(changeset, :hashed_password))
     end
   end
@@ -262,12 +267,17 @@ defmodule EdvitalHub.AccountsTest do
     test "validates password", %{user: user} do
       {:error, changeset} =
         Accounts.update_user_password(user, valid_user_password(), %{
-          password: "not valid",
+          password: "invalid",
           password_confirmation: "another"
         })
 
       assert %{
-               password: ["should be at least 12 character(s)"],
+               password: [
+                 "must have at least one special character (*#$%&!-@)",
+                 "must have at least one upper-case character",
+                 "must have at least 1 digit",
+                 "at least 8+ characters"
+               ],
                password_confirmation: ["does not match password"]
              } = errors_on(changeset)
     end
@@ -278,7 +288,7 @@ defmodule EdvitalHub.AccountsTest do
       {:error, changeset} =
         Accounts.update_user_password(user, valid_user_password(), %{password: too_long})
 
-      assert "should be at most 72 character(s)" in errors_on(changeset).password
+      assert "at most 72 character(s)" in errors_on(changeset).password
     end
 
     test "validates current password", %{user: user} do
@@ -291,11 +301,11 @@ defmodule EdvitalHub.AccountsTest do
     test "updates the password", %{user: user} do
       {:ok, user} =
         Accounts.update_user_password(user, valid_user_password(), %{
-          password: "new valid password"
+          password: "NewValidPass@123!"
         })
 
       assert is_nil(user.password)
-      assert Accounts.get_user_by_email_and_password(user.email, "new valid password")
+      assert Accounts.get_user_by_email_and_password(user.email, "NewValidPass@123!")
     end
 
     test "deletes all tokens for the given user", %{user: user} do
@@ -303,7 +313,7 @@ defmodule EdvitalHub.AccountsTest do
 
       {:ok, _} =
         Accounts.update_user_password(user, valid_user_password(), %{
-          password: "new valid password"
+          password: "NewvalidPassword@124$!"
         })
 
       refute Repo.get_by(UserToken, user_id: user.id)
@@ -471,12 +481,17 @@ defmodule EdvitalHub.AccountsTest do
     test "validates password", %{user: user} do
       {:error, changeset} =
         Accounts.reset_user_password(user, %{
-          password: "not valid",
-          password_confirmation: "another"
+          password: "invalid",
+          password_confirmation: "nomatch"
         })
 
       assert %{
-               password: ["should be at least 12 character(s)"],
+               password: [
+                 "must have at least one special character (*#$%&!-@)",
+                 "must have at least one upper-case character",
+                 "must have at least 1 digit",
+                 "at least 8+ characters"
+               ],
                password_confirmation: ["does not match password"]
              } = errors_on(changeset)
     end
@@ -484,18 +499,18 @@ defmodule EdvitalHub.AccountsTest do
     test "validates maximum values for password for security", %{user: user} do
       too_long = String.duplicate("db", 100)
       {:error, changeset} = Accounts.reset_user_password(user, %{password: too_long})
-      assert "should be at most 72 character(s)" in errors_on(changeset).password
+      assert "at most 72 character(s)" in errors_on(changeset).password
     end
 
     test "updates the password", %{user: user} do
-      {:ok, updated_user} = Accounts.reset_user_password(user, %{password: "new valid password"})
+      {:ok, updated_user} = Accounts.reset_user_password(user, %{password: "NewValidPass@123!"})
       assert is_nil(updated_user.password)
-      assert Accounts.get_user_by_email_and_password(user.email, "new valid password")
+      assert Accounts.get_user_by_email_and_password(user.email, "NewValidPass@123!")
     end
 
     test "deletes all tokens for the given user", %{user: user} do
       _ = Accounts.generate_user_session_token(user)
-      {:ok, _} = Accounts.reset_user_password(user, %{password: "new valid password"})
+      {:ok, _} = Accounts.reset_user_password(user, %{password: "NewValidPass@123!"})
       refute Repo.get_by(UserToken, user_id: user.id)
     end
   end

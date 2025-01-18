@@ -45,13 +45,14 @@ defmodule EdvitalHub.Accounts.User do
   def registration_changeset(user, attrs, opts \\ []) do
     user
     |> cast(attrs, [:email, :first_name, :last_name, :password])
-    |> validate_required([:email, :first_name, :last_name, :password])
+    |> validate_required([:first_name, :last_name])
     |> validate_email(opts)
     |> validate_password(opts)
   end
 
   defp validate_email(changeset, opts) do
     changeset
+    |> validate_required([:email])
     |> validate_format(:email, ~r/^[^\s]+@[^\s]+$/, message: "must have the @ sign and no spaces")
     |> validate_length(:email, max: 160)
     |> maybe_validate_unique_email(opts)
@@ -59,7 +60,8 @@ defmodule EdvitalHub.Accounts.User do
 
   defp validate_password(changeset, opts) do
     changeset
-    |> validate_length(:password, min: 8, message: "must be at least 8+ characters")
+    |> validate_required([:password])
+    |> validate_length(:password, min: 8, message: "at least 8+ characters")
     |> validate_length(:password, max: 72, message: "at most 72 character(s)")
     |> validate_format(:password, ~r/[0-9]/, message: "must have at least 1 digit")
     |> validate_format(:password, ~r/[A-Z]/,

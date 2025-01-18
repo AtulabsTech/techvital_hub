@@ -86,7 +86,14 @@ defmodule EdvitalHubWeb.UserSettingsLiveTest do
     setup %{conn: conn} do
       password = valid_user_password()
       user = user_fixture(%{password: password})
-      %{conn: log_in_user(conn, user), user: user, password: password}
+
+      token =
+        extract_user_token(fn url ->
+          EdvitalHub.Accounts.deliver_user_confirmation_instructions(user, url)
+        end)
+
+      {:ok, confirmed_user} = EdvitalHub.Accounts.confirm_user(token)
+      %{conn: log_in_user(conn, user), user: confirmed_user, password: password}
     end
 
     test "updates the user password", %{conn: conn, user: user, password: password} do
@@ -127,13 +134,13 @@ defmodule EdvitalHubWeb.UserSettingsLiveTest do
         |> render_change(%{
           "current_password" => "invalid",
           "user" => %{
-            "password" => "too short",
+            "password" => "short",
             "password_confirmation" => "does not match"
           }
         })
 
       assert result =~ "Change Password"
-      assert result =~ "should be at least 12 character(s)"
+      assert result =~ "at least 8+ characters"
       assert result =~ "does not match password"
     end
 
@@ -145,14 +152,14 @@ defmodule EdvitalHubWeb.UserSettingsLiveTest do
         |> form("#password_form", %{
           "current_password" => "invalid",
           "user" => %{
-            "password" => "too short",
+            "password" => "short",
             "password_confirmation" => "does not match"
           }
         })
         |> render_submit()
 
       assert result =~ "Change Password"
-      assert result =~ "should be at least 12 character(s)"
+      assert result =~ "at least 8+ characters"
       assert result =~ "does not match password"
       assert result =~ "is not valid"
     end

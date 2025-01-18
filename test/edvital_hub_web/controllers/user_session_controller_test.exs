@@ -9,9 +9,16 @@ defmodule EdvitalHubWeb.UserSessionControllerTest do
 
   describe "POST /login" do
     test "logs the user in", %{conn: conn, user: user} do
+      token =
+        extract_user_token(fn url ->
+          EdvitalHub.Accounts.deliver_user_confirmation_instructions(user, url)
+        end)
+
+      {:ok, confirmed_user} = EdvitalHub.Accounts.confirm_user(token)
+
       conn =
         post(conn, ~p"/login", %{
-          "user" => %{"email" => user.email, "password" => valid_user_password()}
+          "user" => %{"email" => confirmed_user.email, "password" => valid_user_password()}
         })
 
       assert get_session(conn, :user_token)
@@ -26,10 +33,17 @@ defmodule EdvitalHubWeb.UserSessionControllerTest do
     end
 
     test "logs the user in with remember me", %{conn: conn, user: user} do
+      token =
+        extract_user_token(fn url ->
+          EdvitalHub.Accounts.deliver_user_confirmation_instructions(user, url)
+        end)
+
+      {:ok, confirmed_user} = EdvitalHub.Accounts.confirm_user(token)
+
       conn =
         post(conn, ~p"/login", %{
           "user" => %{
-            "email" => user.email,
+            "email" => confirmed_user.email,
             "password" => valid_user_password(),
             "remember_me" => "true"
           }
@@ -40,12 +54,19 @@ defmodule EdvitalHubWeb.UserSessionControllerTest do
     end
 
     test "logs the user in with return to", %{conn: conn, user: user} do
+      token =
+        extract_user_token(fn url ->
+          EdvitalHub.Accounts.deliver_user_confirmation_instructions(user, url)
+        end)
+
+      {:ok, confirmed_user} = EdvitalHub.Accounts.confirm_user(token)
+
       conn =
         conn
         |> init_test_session(user_return_to: "/foo/bar")
         |> post(~p"/login", %{
           "user" => %{
-            "email" => user.email,
+            "email" => confirmed_user.email,
             "password" => valid_user_password()
           }
         })
@@ -54,7 +75,7 @@ defmodule EdvitalHubWeb.UserSessionControllerTest do
       assert Phoenix.Flash.get(conn.assigns.flash, :info) =~ "Welcome back!"
     end
 
-    test "login following registration", %{conn: conn, user: user} do
+    test "redirects to login following registration", %{conn: conn, user: user} do
       conn =
         conn
         |> post(~p"/login", %{
@@ -65,17 +86,24 @@ defmodule EdvitalHubWeb.UserSessionControllerTest do
           }
         })
 
-      assert redirected_to(conn) == ~p"/dashboard"
+      assert redirected_to(conn) == ~p"/login"
       assert Phoenix.Flash.get(conn.assigns.flash, :info) =~ "Account created successfully"
     end
 
     test "login following password update", %{conn: conn, user: user} do
+      token =
+        extract_user_token(fn url ->
+          EdvitalHub.Accounts.deliver_user_confirmation_instructions(user, url)
+        end)
+
+      {:ok, confirmed_user} = EdvitalHub.Accounts.confirm_user(token)
+
       conn =
         conn
         |> post(~p"/login", %{
           "_action" => "password_updated",
           "user" => %{
-            "email" => user.email,
+            "email" => confirmed_user.email,
             "password" => valid_user_password()
           }
         })

@@ -26,8 +26,15 @@ defmodule EdvitalHubWeb.UserLoginLiveTest do
 
   describe "user login" do
     test "redirects if user login with valid credentials", %{conn: conn} do
-      password = "123456789abcd"
+      password = "123456789abcd!A"
       user = user_fixture(%{password: password})
+
+      token =
+        extract_user_token(fn url ->
+          EdvitalHub.Accounts.deliver_user_confirmation_instructions(user, url)
+        end)
+
+      {:ok, user} = EdvitalHub.Accounts.confirm_user(token)
 
       {:ok, lv, _html} = live(conn, ~p"/login")
 
