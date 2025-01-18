@@ -51,6 +51,7 @@ defmodule EdvitalHubWeb.UserRegistrationLive do
       socket
       |> assign(trigger_submit: false, check_errors: false)
       |> assign_form(changeset)
+      |> assign(page_title: "Register")
 
     {:ok, socket, temporary_assigns: [form: nil]}
   end
