@@ -34,35 +34,35 @@ defmodule EdvitalHubWeb.OnboardingLive.Shared.AuthComponents do
   def password_criteria_icon(assigns) do
     ~H"""
     <svg
-      width="14"
-      height="10"
-      viewBox="0 0 14 14"
-      fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      class={@class}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="2.5"
+      stroke={@stroke_color}
+      class="size-4"
     >
-      <circle cx="7" cy="7" r="6" stroke={@stroke_color} stroke-width="2" fill={@stroke_color} />
+      <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
     </svg>
     """
   end
-
-  attr :class, :string, default: nil
 
   @spec password_criteria_not_met_icon(assigns()) :: output()
   def password_criteria_not_met_icon(assigns) do
     ~H"""
     <svg
-      width="16"
-      height="16"
-      viewBox="0 0 16 16"
-      fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      class={@class}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="2.5"
+      stroke={@stroke_color}
+      class="size-4"
     >
-      <circle cx="8" cy="8" r="4" stroke="#FE888D" stroke-width="2" fill="#FE888D" />
+      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
     </svg>
     """
   end
+
+  attr :class, :string, default: nil
 
   slot :inner_block, required: true
   @spec auth_template(assigns()) :: output()

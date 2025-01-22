@@ -52,7 +52,7 @@ defmodule EdvitalHubWeb.OnboardingLive.Shared.NewPasswordInputComponent do
 
   defp password_condition_color(password_condition_errors, condition) do
     if Enum.empty?(password_condition_errors) do
-      "phx-no-feedback:text-gray-500 text-green-500"
+      "phx-no-feedback:text-gray-500 text-white"
     else
       color_errors(password_condition_errors, condition)
     end
@@ -61,18 +61,14 @@ defmodule EdvitalHubWeb.OnboardingLive.Shared.NewPasswordInputComponent do
   defp color_errors(password_condition_errors, condition) do
     if Enum.member?(password_condition_errors, condition) ||
          Enum.member?(password_condition_errors, :blank),
-       do: "phx-no-feedback:text-gray-500 text-red-500",
-       else: "phx-no-feedback:text-gray-500 text-green-500"
+       do: "phx-no-feedback:text-gray-500 text-[#FF0000]",
+       else: "phx-no-feedback:text-gray-500 text-white"
   end
 
   defp password_condition_icon(assigns) do
     ~H"""
     <%= if Enum.empty?(@errors) do %>
-      <AuthComponents.password_criteria_icon
-        stroke_color="#D9D9D9"
-        class="hidden phx-no-feedback:block"
-      />
-      <AuthComponents.password_criteria_icon stroke_color="#4CAF50" class="phx-no-feedback:hidden" />
+      <AuthComponents.password_criteria_icon stroke_color="#FFFFFF" class="phx-no-feedback:hidden" />
     <% else %>
       <.set_error_icon errors={@errors} condition={@condition} />
     <% end %>
@@ -82,17 +78,12 @@ defmodule EdvitalHubWeb.OnboardingLive.Shared.NewPasswordInputComponent do
   defp set_error_icon(assigns) do
     ~H"""
     <%= if (@condition in @errors || :blank in @errors) do %>
-      <AuthComponents.password_criteria_not_met_icon class="phx-no-feedback:hidden" />
-      <AuthComponents.password_criteria_icon
-        stroke_color="#D9D9D9"
+      <AuthComponents.password_criteria_not_met_icon
+        stroke_color="#FF0000"
         class="hidden phx-no-feedback:block"
       />
     <% else %>
-      <AuthComponents.password_criteria_icon
-        stroke_color="#D9D9D9"
-        class="hidden phx-no-feedback:block"
-      />
-      <AuthComponents.password_criteria_icon stroke_color="#4CAF50" class="phx-no-feedback:hidden" />
+      <AuthComponents.password_criteria_icon stroke_color="#D9D9D9" class="phx-no-feedback:hidden" />
     <% end %>
     """
   end

@@ -40,7 +40,7 @@ defmodule EdvitalHubWeb.UserLoginLive do
           </.button>
         </:actions>
       </.simple_form>
-      <p class="text-sm md:text-md lg:text-lg">
+      <p class="text-sm md:text-md lg:text-lg mt-4">
         Don't have an account?
         <.link navigate={~p"/register"} class="font-semibold text-brand hover:underline">
           Sign up
