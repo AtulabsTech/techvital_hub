@@ -23,7 +23,7 @@ defmodule EdvitalHubWeb.OnboardingLive.Shared.AuthComponents do
           class="w-full mb-12"
           phx-value-user_email={@form.data.email}
         >
-          Resend Confirmation Instruction
+          Resend Confirmation Instructions
         </.button>
       </div>
     </div>
