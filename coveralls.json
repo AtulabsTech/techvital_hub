@@ -4,6 +4,8 @@
   },
   "skip_files": [
     "lib/edvital_hub_web/components/core_components.ex",
+    "lib/edvital_hub_web/components/home_components.ex",
+    "lib/edvital_hub_web/live/common_components/icons.ex",
     "lib/edvital_hub/release.ex"
   ]
 }
