@@ -3,8 +3,8 @@ defmodule EdvitalHubWeb.OnboardingLive.Shared.NewPasswordInputComponent do
 
   use EdvitalHubWeb, :html
 
-  alias EdvitalHubWeb.OnboardingLive.Shared.InputComponents
   alias EdvitalHubWeb.OnboardingLive.Shared.AuthComponents
+  alias EdvitalHubWeb.OnboardingLive.Shared.InputComponents
 
   @type assigns :: map()
   @type output :: Phoenix.LiveView.Rendered.t()
