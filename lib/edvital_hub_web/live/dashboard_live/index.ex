@@ -3,8 +3,15 @@ defmodule EdvitalHubWeb.DashboardLive.Index do
 
   use EdvitalHubWeb, :live_view
 
+  alias EdvitalHub.Accounts
+
   @impl Phoenix.LiveView
-  def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Dashboard")}
+  def mount(_params, session, socket) do
+    user = Accounts.get_user_by_session_token(session["user_token"])
+
+    {:ok,
+     socket
+     |> assign(page_title: "Dashboard")
+     |> assign(current_user: user)}
   end
 end
