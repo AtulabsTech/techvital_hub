@@ -3,8 +3,8 @@ defmodule EdvitalHubWeb.UserRegistrationLive do
 
   alias EdvitalHub.Accounts
   alias EdvitalHub.Accounts.User
-  alias EdvitalHubWeb.OnboardingLive.UserRegistration
   alias EdvitalHubWeb.OnboardingLive.Shared.AuthComponents
+  alias EdvitalHubWeb.OnboardingLive.UserRegistration
 
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
@@ -37,7 +37,7 @@ defmodule EdvitalHubWeb.UserRegistrationLive do
 
   def render(%{template: :success} = assigns) do
     ~H"""
-    <AuthComponents.registration_success_page form={@form} title="Confirm your Email Address" />
+    <AuthComponents.registration_success_page form={@form} title={@page_title} />
     """
   end
 
@@ -57,6 +57,8 @@ defmodule EdvitalHubWeb.UserRegistrationLive do
          socket
          |> assign(trigger_submit: true)
          |> assign_form(changeset)
+         |> put_flash(:info, "User created successfully. Please confirm your email address.")
+         |> assign(page_title: "Confirm your Email Address")
          |> assign(:template, :success)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
