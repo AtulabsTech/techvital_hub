@@ -60,6 +60,22 @@ defmodule EdvitalHub.Accounts do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  @doc """
+  Gets all users in a list
+
+  Returns an empty list if there are no users
+
+  ## Example
+
+      iex> get_users!()
+      [%User{}, %User{}, ...]
+
+      iex> get_users!()
+      ** []
+
+  """
+  def get_users!, do: Repo.all(User)
+
   ## User registration
 
   @doc """

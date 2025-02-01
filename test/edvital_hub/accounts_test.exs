@@ -19,7 +19,7 @@ defmodule EdvitalHub.AccountsTest do
 
   describe "get_user_by_email_and_password/2" do
     test "does not return the user if the email does not exist" do
-      refute Accounts.get_user_by_email_and_password("unknown@example.com", "hello world!")
+      refute Accounts.get_user_by_email_and_password("unknown@example.com", "Hello1world!")
     end
 
     test "does not return the user if the password is not valid" do
@@ -45,6 +45,22 @@ defmodule EdvitalHub.AccountsTest do
     test "returns the user with the given id" do
       %{id: id} = user = user_fixture()
       assert %User{id: ^id} = Accounts.get_user!(user.id)
+    end
+  end
+
+  describe "get_users" do
+    test "returns an empty list if there are no users" do
+      assert [] == Accounts.get_users!()
+    end
+
+    test "returns a list of users" do
+      user_fixture()
+      user_fixture()
+
+      assert length(Accounts.get_users!()) == 2
+      [user1 | [_user2]] = Accounts.get_users!()
+      assert user1.first_name == "John"
+      assert user1.last_name == "Doe"
     end
   end
 
