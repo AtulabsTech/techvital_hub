@@ -5,21 +5,27 @@ defmodule EdvitalHubWeb.UserForgotPasswordLive do
 
   def render(assigns) do
     ~H"""
-    <div class="mx-auto max-w-sm">
-      <.header class="text-center">
+    <div class="mx-auto max-w-sm pt-24">
+      <.header class="text-center text-lg md:text-2xl lg:text-4xl">
         Forgot your password?
         <:subtitle>We'll send a password reset link to your inbox</:subtitle>
       </.header>
 
       <.simple_form for={@form} id="reset_password_form" phx-submit="send_email">
-        <.input field={@form[:email]} type="email" placeholder="Email" required />
+        <.input
+          field={@form[:email]}
+          type="email"
+          placeholder="Email"
+          class="md:text-base lg:text-lg"
+          required
+        />
         <:actions>
           <.button phx-disable-with="Sending..." class="w-full">
             Send password reset instructions
           </.button>
         </:actions>
       </.simple_form>
-      <p class="text-center text-sm mt-4">
+      <p class="text-center text-sm md:text-base lg:text-md mt-4">
         <.link href={~p"/register"}>Register</.link> | <.link href={~p"/login"}>Log in</.link>
       </p>
     </div>
