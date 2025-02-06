@@ -1,6 +1,8 @@
 defmodule EdvitalHubWeb.UserRegistrationLiveTest do
   use EdvitalHubWeb.ConnCase, async: true
 
+  alias EdvitalHub.Accounts
+
   import Phoenix.LiveViewTest
   import EdvitalHub.AccountsFixtures
 
@@ -8,8 +10,8 @@ defmodule EdvitalHubWeb.UserRegistrationLiveTest do
     test "renders registration page", %{conn: conn} do
       {:ok, _lv, html} = live(conn, ~p"/register")
 
-      assert html =~ "Register"
-      assert html =~ "Log in"
+      assert html =~ "Create an account"
+      assert html =~ "Sign in"
     end
 
     test "redirects if already logged in", %{conn: conn} do
@@ -30,30 +32,36 @@ defmodule EdvitalHubWeb.UserRegistrationLiveTest do
         |> element("#registration_form")
         |> render_change(user: %{"email" => "with spaces", "password" => "short"})
 
-      assert result =~ "Register"
+      assert result =~ "Create an account"
       assert result =~ "must have the @ sign and no spaces"
-      assert result =~ "at least 8+ characters"
+      assert result =~ "8+ characters"
     end
   end
 
   describe "register user" do
-    test "creates account and redirects to home page", %{conn: conn} do
+    test "creates account and notifies user to check their email for confirmation", %{conn: conn} do
       {:ok, lv, _html} = live(conn, ~p"/register")
 
-      email = unique_user_email()
-      form = form(lv, "#registration_form", user: valid_user_attributes(email: email))
-      render_submit(form)
-      conn = follow_trigger_action(form, conn)
+      attrs = %{
+        email: unique_user_email(),
+        password: valid_user_password(),
+        first_name: "John",
+        last_name: "Doe"
+      }
 
-      assert redirected_to(conn) == ~p"/login"
-      assert Phoenix.Flash.get(conn.assigns.flash, :info) =~ "Account created successfully"
+      lv
+      |> element("#registration_form")
+      |> render_submit(%{user: attrs})
 
-      # # Now do a logged in request and assert on the menu
-      # conn = get(conn, "/dashboard")
-      # response = html_response(conn, 200)
-      # assert response =~ email
-      # assert response =~ "Settings"
-      # assert response =~ "Log out"
+      assert render(lv) =~ "Confirm your Email Address"
+      assert render(lv) =~ "Resend Confirmation Instructions"
+      assert render(lv) =~ "User created successfully. Please confirm your email address."
+
+      user = Accounts.get_user_by_email(attrs.email)
+      assert user.email == attrs.email
+      assert user.first_name == "John"
+      assert user.last_name == "Doe"
+      refute user.confirmed_at
     end
 
     test "renders errors for duplicated email", %{conn: conn} do
@@ -78,11 +86,11 @@ defmodule EdvitalHubWeb.UserRegistrationLiveTest do
 
       {:ok, _login_live, login_html} =
         lv
-        |> element(~s|main a:fl-contains("Log in")|)
+        |> element(~s|main a:fl-contains("Sign in")|)
         |> render_click()
         |> follow_redirect(conn, ~p"/login")
 
-      assert login_html =~ "Log in"
+      assert login_html =~ "Welcome back"
     end
   end
 end

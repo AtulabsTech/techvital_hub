@@ -66,8 +66,8 @@ defmodule EdvitalHubWeb.Router do
 
     live_session :require_authenticated_user,
       on_mount: [
-        {EdvitalHubWeb.UserAuth, :ensure_authenticated},
-        {EdvitalHubWeb.UserAuth, :mount_current_user}
+        {EdvitalHubWeb.UserAuth, :ensure_authenticated}
+        # {EdvitalHubWeb.UserAuth, :mount_current_user}
       ] do
       live "/dashboard", DashboardLive.Index, :index
 
