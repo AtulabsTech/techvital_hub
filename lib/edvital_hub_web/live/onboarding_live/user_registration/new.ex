@@ -76,12 +76,6 @@ defmodule EdvitalHubWeb.OnboardingLive.UserRegistration.New do
           </.button>
         </:actions>
       </.simple_form>
-      <p class="mt-6 ml-[20%]">
-        Already have an account?
-        <.link navigate={~p"/login"} class="font-semibold text-white hover:underline">
-          Sign in
-        </.link>
-      </p>
     </div>
     """
   end

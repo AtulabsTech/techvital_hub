@@ -3,6 +3,7 @@ defmodule EdvitalHubWeb.UserRegistrationLive do
 
   alias EdvitalHub.Accounts
   alias EdvitalHub.Accounts.User
+  alias EdvitalHubWeb.CommonComponents.Icons
   alias EdvitalHubWeb.OnboardingLive.Shared.AuthComponents
   alias EdvitalHubWeb.OnboardingLive.UserRegistration
 
@@ -16,21 +17,55 @@ defmodule EdvitalHubWeb.UserRegistrationLive do
       |> assign_form(changeset)
       |> assign(page_title: "Register")
       |> assign(:template, :new)
+      |> assign(:show_email_form, false)
 
-    {:ok, socket, temporary_assigns: [form: nil]}
+    {:ok, socket}
   end
 
   @impl Phoenix.LiveView
   def render(%{template: :new} = assigns) do
     ~H"""
     <AuthComponents.auth_template>
-      <.live_component
-        module={UserRegistration.New}
-        id="registration_form"
-        form={@form}
-        check_errors={@check_errors}
-        trigger_submit={@trigger_submit}
-      />
+      <%= if !@show_email_form do %>
+        <div class="flex flex-col justify-between h-[20rem]">
+          <div class="mt-4 mb-4">
+            <.link
+              href={~p"/auth/google"}
+              class="flex items-center justify-center w-full px-4 py-4 text-sm md:text-md lg:text-lg font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-lg hover:bg-gray-50"
+            >
+              <Icons.google_icon />
+              <span class="ml-2">Continue with Google</span>
+            </.link>
+          </div>
+          <span class="mx-auto">OR</span>
+          <div class="mt-4 mb-4">
+            <button
+              id="registration_form_button"
+              phx-click="show_email_form"
+              class="flex items-center justify-center w-full px-4 py-4 text-sm md:text-md lg:text-lg font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-lg hover:bg-gray-50"
+            >
+              <.icon class="" name="hero-envelope" />
+              <span class="ml-2">Continue with Email</span>
+            </button>
+          </div>
+          <p class="mt-6 ml-[20%]">
+            Already have an account?
+            <.link navigate={~p"/login"} class="font-semibold text-white hover:underline">
+              Sign in
+            </.link>
+          </p>
+        </div>
+      <% else %>
+        <div class="animate-fade-in">
+          <.live_component
+            module={UserRegistration.New}
+            id="registration_form"
+            form={@form}
+            check_errors={@check_errors}
+            trigger_submit={@trigger_submit}
+          />
+        </div>
+      <% end %>
     </AuthComponents.auth_template>
     """
   end
@@ -42,6 +77,10 @@ defmodule EdvitalHubWeb.UserRegistrationLive do
   end
 
   @impl Phoenix.LiveView
+  def handle_event("show_email_form", _, socket) do
+    {:noreply, assign(socket, :show_email_form, true)}
+  end
+
   def handle_event("save", %{"user" => user_params}, socket) do
     case Accounts.register_user(user_params) do
       {:ok, user} ->

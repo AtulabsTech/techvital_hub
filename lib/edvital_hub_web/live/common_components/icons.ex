@@ -1,4 +1,4 @@
-defmodule EdevitalHubWeb.CommonComponents.Icons do
+defmodule EdvitalHubWeb.CommonComponents.Icons do
   @moduledoc false
 
   use EdvitalHubWeb, :html
