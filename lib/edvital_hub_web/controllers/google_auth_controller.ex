@@ -26,8 +26,6 @@ defmodule EdvitalHubWeb.GoogleAuthController do
   @type params :: map()
 
   def request(conn, _params) do
-    client_id = Application.get_env(:ueberauth, Ueberauth.Strategy.Google.OAuth)[:client_id]
-    Logger.debug("Google Client ID: #{inspect(client_id)}")
     Phoenix.Controller.redirect(conn, to: Ueberauth.Strategy.Helpers.callback_url(conn))
   end
 
@@ -66,7 +64,6 @@ defmodule EdvitalHubWeb.GoogleAuthController do
         email: auth.info.email,
         first_name: auth.info.first_name,
         last_name: auth.info.last_name,
-        password: generate_random_password(),
         confirmed_at: DateTime.utc_now()
       }
 
@@ -89,11 +86,5 @@ defmodule EdvitalHubWeb.GoogleAuthController do
         |> put_flash(:info, "Welcome back!")
         |> UserAuth.log_in_user(user)
     end
-  end
-
-  defp generate_random_password do
-    :crypto.strong_rand_bytes(32)
-    |> Base.encode64()
-    |> binary_part(0, 32)
   end
 end

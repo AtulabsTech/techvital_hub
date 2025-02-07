@@ -109,6 +109,7 @@ defmodule EdvitalHub.Accounts do
 
   """
   def register_oauth_user(attrs) do
+    # A last name can sometimes be nil and that breaks the changeset
     %User{}
     |> User.oauth_registration_changeset(attrs)
     |> Repo.insert()
