@@ -30,4 +30,18 @@ defmodule EdvitalHub.AccountsFixtures do
     [_, token | _] = String.split(captured_email.text_body, "[TOKEN]")
     token
   end
+
+  def oauth_user_fixture(attrs \\ %{}) do
+    {:ok, user} =
+      attrs
+      |> Enum.into(%{
+        email: unique_user_email(),
+        first_name: "John",
+        last_name: "Doe",
+        confirmed_at: DateTime.utc_now()
+      })
+      |> EdvitalHub.Accounts.register_oauth_user()
+
+    user
+  end
 end

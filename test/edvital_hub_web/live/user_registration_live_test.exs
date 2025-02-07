@@ -10,7 +10,16 @@ defmodule EdvitalHubWeb.UserRegistrationLiveTest do
     test "renders registration page", %{conn: conn} do
       {:ok, _lv, html} = live(conn, ~p"/register")
 
-      assert html =~ "Create an account"
+      # TODO: Test LiveComponents and function components.
+      # assert render_component(EdvitalHubWeb.OnboardingLive.UserRegistration.New,
+      #          id: "registration_form",
+      #          user: %EdvitalHub.Accounts.User{}
+      #        ) =~
+      #          "Create an account"
+
+      assert html =~ "Continue with Google"
+      assert html =~ "Continue with Email"
+      assert html =~ "Already have an account"
       assert html =~ "Sign in"
     end
 
@@ -24,8 +33,27 @@ defmodule EdvitalHubWeb.UserRegistrationLiveTest do
       assert {:ok, _conn} = result
     end
 
+    test "shows registration form when clicking continue with email", %{conn: conn} do
+      {:ok, lv, _html} = live(conn, ~p"/register")
+
+      result =
+        lv
+        |> element("button", "Continue with Email")
+        |> render_click()
+
+      assert result =~ "Create an account"
+      assert result =~ "First Name"
+      assert result =~ "Last Name"
+      assert result =~ "Email"
+      assert result =~ "Password"
+    end
+
     test "renders errors for invalid data", %{conn: conn} do
       {:ok, lv, _html} = live(conn, ~p"/register")
+
+      lv
+      |> element("button", "Continue with Email")
+      |> render_click()
 
       result =
         lv
@@ -41,6 +69,10 @@ defmodule EdvitalHubWeb.UserRegistrationLiveTest do
   describe "register user" do
     test "creates account and notifies user to check their email for confirmation", %{conn: conn} do
       {:ok, lv, _html} = live(conn, ~p"/register")
+
+      lv
+      |> element("button", "Continue with Email")
+      |> render_click()
 
       attrs = %{
         email: unique_user_email(),
@@ -66,6 +98,10 @@ defmodule EdvitalHubWeb.UserRegistrationLiveTest do
 
     test "renders errors for duplicated email", %{conn: conn} do
       {:ok, lv, _html} = live(conn, ~p"/register")
+
+      lv
+      |> element("button", "Continue with Email")
+      |> render_click()
 
       user = user_fixture(%{email: "test@email.com"})
 

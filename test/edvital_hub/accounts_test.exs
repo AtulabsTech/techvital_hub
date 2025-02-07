@@ -115,6 +115,96 @@ defmodule EdvitalHub.AccountsTest do
     end
   end
 
+  describe "register_oauth_user/1" do
+    test "requires email to be set" do
+      {:error, changeset} = Accounts.register_oauth_user(%{})
+      assert %{email: ["can't be blank"]} = errors_on(changeset)
+    end
+
+    test "validates email format" do
+      {:error, changeset} = Accounts.register_oauth_user(%{email: "not valid"})
+      assert "must have the @ sign and no spaces" in errors_on(changeset).email
+    end
+
+    test "validates maximum values for email for security" do
+      too_long = String.duplicate("db", 100)
+      {:error, changeset} = Accounts.register_oauth_user(%{email: too_long})
+      assert "should be at most 160 character(s)" in errors_on(changeset).email
+    end
+
+    test "validates email uniqueness" do
+      %{email: email} = user_fixture()
+      {:error, changeset} = Accounts.register_oauth_user(%{email: email})
+      assert "has already been taken" in errors_on(changeset).email
+
+      # Now try with the upper cased email too, to check that email case is ignored.
+      {:error, changeset} = Accounts.register_oauth_user(%{email: String.upcase(email)})
+      assert "has already been taken" in errors_on(changeset).email
+    end
+
+    test "registers oauth user with valid attributes" do
+      email = unique_user_email()
+
+      attrs = %{
+        email: email,
+        first_name: "John",
+        last_name: "Doe",
+        confirmed_at: DateTime.utc_now()
+      }
+
+      {:ok, user} = Accounts.register_oauth_user(attrs)
+      assert user.email == email
+      assert user.first_name == "John"
+      assert user.last_name == "Doe"
+      assert user.is_oauth_user == true
+      assert is_nil(user.hashed_password)
+      # OAuth users are automatically confirmed
+      assert user.confirmed_at != nil
+    end
+
+    test "does not allow oauth users to use password authentication" do
+      email = unique_user_email()
+
+      {:ok, _user} =
+        Accounts.register_oauth_user(%{
+          email: email,
+          first_name: "John",
+          last_name: "Doe",
+          confirmed_at: DateTime.utc_now()
+        })
+
+      refute Accounts.get_user_by_email_and_password(email, "any password")
+    end
+
+    test "allows oauth user to register with same email if previous user was deleted" do
+      email = unique_user_email()
+      attrs = %{email: email, first_name: "John", last_name: "Doe"}
+
+      {:ok, user1} = Accounts.register_oauth_user(attrs)
+      Repo.delete!(user1)
+
+      {:ok, user2} = Accounts.register_oauth_user(attrs)
+      assert user2.email == email
+    end
+
+    test "registers oauth user with confirmed email" do
+      email = unique_user_email()
+
+      {:ok, user} =
+        Accounts.register_oauth_user(%{
+          email: email,
+          first_name: "John",
+          last_name: "Doe",
+          confirmed_at: DateTime.utc_now()
+        })
+
+      assert user.confirmed_at != nil
+
+      assert DateTime.compare(user.confirmed_at, DateTime.add(DateTime.utc_now(), -1, :second)) ==
+               :gt
+    end
+  end
+
   describe "change_user_registration/2" do
     test "returns a changeset" do
       assert %Ecto.Changeset{} = changeset = Accounts.change_user_registration(%User{})
