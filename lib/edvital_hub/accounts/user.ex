@@ -10,6 +10,7 @@ defmodule EdvitalHub.Accounts.User do
   schema "users" do
     field :email, :string
     field :first_name, :string
+    field :is_oauth_user, :boolean, default: false
     field :last_name, :string
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
@@ -48,6 +49,14 @@ defmodule EdvitalHub.Accounts.User do
     |> validate_required([:first_name, :last_name])
     |> validate_email(opts)
     |> validate_password(opts)
+  end
+
+  def oauth_registration_changeset(user, attrs, opts \\ []) do
+    user
+    |> cast(attrs, [:email, :first_name, :last_name, :confirmed_at])
+    |> validate_required([:first_name, :last_name, :email])
+    |> validate_email(opts)
+    |> put_change(:is_oauth_user, true)
   end
 
   defp validate_email(changeset, opts) do

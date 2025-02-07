@@ -9,7 +9,7 @@ defmodule EdvitalHub.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: phoenix_deps() ++ atulabs_deps(),
+      deps: phoenix_deps() ++ atulabs_deps() ++ app_deps(),
 
       # CI
       dialyzer: [
@@ -45,6 +45,12 @@ defmodule EdvitalHub.MixProject do
   # Specifies your project dependencies.
   #
   # Type `mix help deps` for examples and options.
+  defp app_deps do
+    [
+      {:ueberauth_google, "~> 0.10"}
+    ]
+  end
+
   defp atulabs_deps do
     [
       {:credo, "~> 1.7", only: :test, runtime: false},

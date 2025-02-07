@@ -97,6 +97,24 @@ defmodule EdvitalHub.Accounts do
   end
 
   @doc """
+  Registers a user from a Google Auth provider.
+
+  ## Examples
+
+      iex> register_oauth_user(%{field: value})
+      {:ok, %User{}}
+
+      iex> register_oauth_user(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def register_oauth_user(attrs) do
+    %User{}
+    |> User.oauth_registration_changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
   Returns an `%Ecto.Changeset{}` for tracking user changes.
 
   ## Examples

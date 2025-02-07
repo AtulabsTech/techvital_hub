@@ -1,6 +1,7 @@
 defmodule EdvitalHubWeb.UserLoginLive do
   use EdvitalHubWeb, :live_view
 
+  alias EdevitalHubWeb.CommonComponents.Icons
   alias EdvitalHubWeb.OnboardingLive.Shared.AuthComponents
 
   def render(assigns) do
@@ -9,6 +10,16 @@ defmodule EdvitalHubWeb.UserLoginLive do
       <h1 class="text-center font-maven font-semibold text-lg md:text-3xl lg:text-5xl">
         Welcome back
       </h1>
+
+      <div class="mt-4 mb-4">
+        <.link
+          href={~p"/auth/google"}
+          class="flex items-center justify-center w-full px-4 py-4 text-sm md:text-md lg:text-lg font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-lg hover:bg-gray-50"
+        >
+          <Icons.google_icon />
+          <span class="ml-2">Continue with Google</span>
+        </.link>
+      </div>
 
       <.simple_form for={@form} id="login_form" action={~p"/login"} phx-update="ignore">
         <.input

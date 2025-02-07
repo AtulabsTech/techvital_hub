@@ -87,4 +87,11 @@ defmodule EdvitalHubWeb.Router do
       live "/confirm", UserConfirmationInstructionsLive, :new
     end
   end
+
+  scope "/auth", EdvitalHubWeb do
+    pipe_through [:browser, :redirect_if_user_is_authenticated]
+
+    get "/:provider", GoogleAuthController, :request
+    get "/:provider/callback", GoogleAuthController, :callback
+  end
 end
