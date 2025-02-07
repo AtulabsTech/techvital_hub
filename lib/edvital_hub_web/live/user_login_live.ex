@@ -1,7 +1,7 @@
 defmodule EdvitalHubWeb.UserLoginLive do
   use EdvitalHubWeb, :live_view
 
-  alias EdevitalHubWeb.CommonComponents.Icons
+  alias EdvitalHubWeb.CommonComponents.Icons
   alias EdvitalHubWeb.OnboardingLive.Shared.AuthComponents
 
   def render(assigns) do
@@ -20,6 +20,7 @@ defmodule EdvitalHubWeb.UserLoginLive do
           <span class="ml-2">Continue with Google</span>
         </.link>
       </div>
+      <p class="mx-auto text-center">OR</p>
 
       <.simple_form for={@form} id="login_form" action={~p"/login"} phx-update="ignore">
         <.input
