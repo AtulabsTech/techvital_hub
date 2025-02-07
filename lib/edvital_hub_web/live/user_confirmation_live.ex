@@ -6,16 +6,18 @@ defmodule EdvitalHubWeb.UserConfirmationLive do
   def render(%{live_action: :edit} = assigns) do
     ~H"""
     <div class="mx-auto max-w-sm pt-48">
-      <.header class="text-center">Confirm Account</.header>
+      <.header class="text-center text-sm md:text-base lg:text-lg">Confirm Account</.header>
 
       <.simple_form for={@form} id="confirmation_form" phx-submit="confirm_account">
         <input type="hidden" name={@form[:token].name} value={@form[:token].value} />
         <:actions>
-          <.button phx-disable-with="Confirming..." class="w-full">Confirm my account</.button>
+          <.button phx-disable-with="Confirming..." class="w-full text-sm md:text-base lg:text-lg">
+            Confirm my account
+          </.button>
         </:actions>
       </.simple_form>
 
-      <p class="text-center mt-4">
+      <p class="text-center mt-4 text-sm md:text-base lg:text-lg">
         <.link href={~p"/register"}>Register</.link> | <.link href={~p"/login"}>Log in</.link>
       </p>
     </div>
