@@ -2,7 +2,7 @@
 
 ## Development Setup
 
-1. Create a `.env` file with Google OAuth credentials:
+1.  Create a `.env` file with Google OAuth credentials:
 
         GOOGLE_CLIENT_ID=client_id
 
