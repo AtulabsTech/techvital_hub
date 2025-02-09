@@ -10,6 +10,7 @@ defmodule EdvitalHubWeb.HomeLive.Index do
     {:ok,
      socket
      |> assign(page_title: "Home")
+     |> assign(current_user: nil)
      |> assign(build_outline: build_outline())
      |> assign(learn_outline: learn_outline())}
   end
