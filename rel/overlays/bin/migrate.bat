@@ -1,1 +1,1 @@
-call "%~dp0\edvital_hub" eval EdvitalHub.Release.migrate
+call "%~dp0\techvital_hub" eval TechvitalHub.Release.migrate

@@ -89,7 +89,7 @@
              if_called_more_often_than: 0,
              files: %{
                excluded: [
-                 "lib/edvital_hub_web/components/core_components.ex",
+                 "lib/techvital_hub_web/components/core_components.ex",
                  "test/support/data_case.ex"
                ]
              }
@@ -196,10 +196,10 @@
            [
              files: %{
                excluded: [
-                 "lib/edvital_hub_web.ex",
-                 "lib/edvital_hub_web/components/core_components.ex",
-                 "lib/edvital_hub_web/controllers/error_html.ex",
-                 "lib/edvital_hub_web/controllers/error_json.ex"
+                 "lib/techvital_hub_web.ex",
+                 "lib/techvital_hub_web/components/core_components.ex",
+                 "lib/techvital_hub_web/controllers/error_html.ex",
+                 "lib/techvital_hub_web/controllers/error_json.ex"
                ]
              }
            ]},
@@ -216,9 +216,9 @@
            [
              files: %{
                excluded: [
-                 "lib/edvital_hub/application.ex",
-                 "lib/edvital_hub_web.ex",
-                 "lib/edvital_hub_web/router.ex"
+                 "lib/techvital_hub/application.ex",
+                 "lib/techvital_hub_web.ex",
+                 "lib/techvital_hub_web/router.ex"
                ]
              }
            ]},

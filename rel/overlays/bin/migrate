@@ -2,4 +2,4 @@
 set -eu
 
 cd -P -- "$(dirname -- "$0")"
-exec ./edvital_hub eval EdvitalHub.Release.migrate
+exec ./techvital_hub eval TechvitalHub.Release.migrate

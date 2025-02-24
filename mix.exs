@@ -1,9 +1,9 @@
-defmodule EdvitalHub.MixProject do
+defmodule TechvitalHub.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :edvital_hub,
+      app: :techvital_hub,
       version: "0.1.0",
       elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -33,7 +33,7 @@ defmodule EdvitalHub.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {EdvitalHub.Application, []},
+      mod: {TechvitalHub.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end
@@ -113,10 +113,10 @@ defmodule EdvitalHub.MixProject do
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
-      "assets.build": ["tailwind edvital_hub", "esbuild edvital_hub"],
+      "assets.build": ["tailwind techvital_hub", "esbuild techvital_hub"],
       "assets.deploy": [
-        "tailwind edvital_hub --minify",
-        "esbuild edvital_hub --minify",
+        "tailwind techvital_hub --minify",
+        "esbuild techvital_hub --minify",
         "phx.digest"
       ],
       ci: [

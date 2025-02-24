@@ -1,4 +1,4 @@
-defmodule EdvitalHub.Repo.Migrations.AddNamesToUsers do
+defmodule TechvitalHub.Repo.Migrations.AddNamesToUsers do
   use Ecto.Migration
 
   def up do

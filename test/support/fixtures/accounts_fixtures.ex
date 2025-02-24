@@ -1,7 +1,7 @@
-defmodule EdvitalHub.AccountsFixtures do
+defmodule TechvitalHub.AccountsFixtures do
   @moduledoc """
   This module defines test helpers for creating
-  entities via the `EdvitalHub.Accounts` context.
+  entities via the `TechvitalHub.Accounts` context.
   """
 
   def unique_user_email, do: "user#{System.unique_integer()}@example.com"
@@ -20,7 +20,7 @@ defmodule EdvitalHub.AccountsFixtures do
     {:ok, user} =
       attrs
       |> valid_user_attributes()
-      |> EdvitalHub.Accounts.register_user()
+      |> TechvitalHub.Accounts.register_user()
 
     user
   end
@@ -40,7 +40,7 @@ defmodule EdvitalHub.AccountsFixtures do
         last_name: "Doe",
         confirmed_at: DateTime.utc_now()
       })
-      |> EdvitalHub.Accounts.register_oauth_user()
+      |> TechvitalHub.Accounts.register_oauth_user()
 
     user
   end

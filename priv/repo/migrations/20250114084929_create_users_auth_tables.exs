@@ -1,4 +1,4 @@
-defmodule EdvitalHub.Repo.Migrations.CreateUsersAuthTables do
+defmodule TechvitalHub.Repo.Migrations.CreateUsersAuthTables do
   use Ecto.Migration
 
   def change do

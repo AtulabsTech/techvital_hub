@@ -1,5 +1,6 @@
 # The directory Mix will write compiled artifacts to.
 /_build/
+.elixir_ls/
 
 # If you run "mix test --cover", coverage assets end up here.
 /cover/
@@ -23,7 +24,7 @@ erl_crash.dump
 /tmp/
 
 # Ignore package tarball (built via "mix hex.build").
-edvital_hub-*.tar
+techvital_hub-*.tar
 
 # Ignore assets that are produced by build tools.
 /priv/static/assets/

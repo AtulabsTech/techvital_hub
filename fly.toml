@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for edvitalhub on 2025-01-14T09:13:10+03:00
+# fly.toml app configuration file generated for techvitalhub on 2025-01-14T09:13:10+03:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'edvitalhub'
+app = 'techvitalhub'
 primary_region = 'cdg'
 kill_signal = 'SIGTERM'
 
@@ -13,7 +13,7 @@ kill_signal = 'SIGTERM'
 release_command = '/app/bin/migrate'
 
 [env]
-PHX_HOST = 'edvitalhub.fly.dev'
+PHX_HOST = 'techvitalhub.fly.dev'
 PORT = '8080'
 
 [http_service]

@@ -7,19 +7,19 @@
 # General application configuration
 import Config
 
-config :edvital_hub,
-  ecto_repos: [EdvitalHub.Repo],
+config :techvital_hub,
+  ecto_repos: [TechvitalHub.Repo],
   generators: [timestamp_type: :utc_datetime, binary_id: true]
 
 # Configures the endpoint
-config :edvital_hub, EdvitalHubWeb.Endpoint,
+config :techvital_hub, TechvitalHubWeb.Endpoint,
   url: [host: "localhost"],
   adapter: Bandit.PhoenixAdapter,
   render_errors: [
-    formats: [html: EdvitalHubWeb.ErrorHTML, json: EdvitalHubWeb.ErrorJSON],
+    formats: [html: TechvitalHubWeb.ErrorHTML, json: TechvitalHubWeb.ErrorJSON],
     layout: false
   ],
-  pubsub_server: EdvitalHub.PubSub,
+  pubsub_server: TechvitalHub.PubSub,
   live_view: [signing_salt: "yPg0xM0X"]
 
 # Configures the mailer
@@ -29,12 +29,12 @@ config :edvital_hub, EdvitalHubWeb.Endpoint,
 #
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
-config :edvital_hub, EdvitalHub.Mailer, adapter: Swoosh.Adapters.Local
+config :techvital_hub, TechvitalHub.Mailer, adapter: Swoosh.Adapters.Local
 
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.17.11",
-  edvital_hub: [
+  techvital_hub: [
     args:
       ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
     cd: Path.expand("../assets", __DIR__),
@@ -44,7 +44,7 @@ config :esbuild,
 # Configure tailwind (the version is required)
 config :tailwind,
   version: "3.4.3",
-  edvital_hub: [
+  techvital_hub: [
     args: ~w(
       --config=tailwind.config.js
       --input=css/app.css

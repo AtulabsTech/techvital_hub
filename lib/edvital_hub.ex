@@ -1,6 +1,6 @@
-defmodule EdvitalHub do
+defmodule TechvitalHub do
   @moduledoc """
-  EdvitalHub keeps the contexts that define your domain
+  TechvitalHub keeps the contexts that define your domain
   and business logic.
 
   Contexts are also responsible for managing your data, regardless

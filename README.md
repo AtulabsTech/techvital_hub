@@ -1,4 +1,4 @@
-# EdvitalHub
+# TechvitalHub
 
 ## Development Setup
 
@@ -15,4 +15,4 @@ To start your Phoenix server:
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-# edvital_hub
+# techvital_hub
