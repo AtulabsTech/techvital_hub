@@ -8,8 +8,8 @@ const path = require('path')
 module.exports = {
   content: [
     './js/**/*.js',
-    '../lib/edvital_hub_web.ex',
-    '../lib/edvital_hub_web/**/*.*ex',
+    '../lib/techvital_hub_web.ex',
+    '../lib/techvital_hub_web/**/*.*ex',
   ],
   theme: {
     extend: {

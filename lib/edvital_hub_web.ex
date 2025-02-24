@@ -1,12 +1,12 @@
-defmodule EdvitalHubWeb do
+defmodule TechvitalHubWeb do
   @moduledoc """
   The entrypoint for defining your web interface, such
   as controllers, components, channels, and so on.
 
   This can be used in your application as:
 
-      use EdvitalHubWeb, :controller
-      use EdvitalHubWeb, :html
+      use TechvitalHubWeb, :controller
+      use TechvitalHubWeb, :html
 
   The definitions below will be executed for every controller,
   component, etc, so keep them short and clean, focused
@@ -40,9 +40,9 @@ defmodule EdvitalHubWeb do
     quote do
       use Phoenix.Controller,
         formats: [:html, :json],
-        layouts: [html: EdvitalHubWeb.Layouts]
+        layouts: [html: TechvitalHubWeb.Layouts]
 
-      use Gettext, backend: EdvitalHubWeb.Gettext
+      use Gettext, backend: TechvitalHubWeb.Gettext
 
       import Plug.Conn
 
@@ -53,7 +53,7 @@ defmodule EdvitalHubWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
-        layout: {EdvitalHubWeb.Layouts, :app}
+        layout: {TechvitalHubWeb.Layouts, :app}
 
       unquote(html_helpers())
     end
@@ -83,12 +83,12 @@ defmodule EdvitalHubWeb do
   defp html_helpers do
     quote do
       # Translation
-      use Gettext, backend: EdvitalHubWeb.Gettext
+      use Gettext, backend: TechvitalHubWeb.Gettext
 
       # HTML escaping functionality
       import Phoenix.HTML
       # Core UI components
-      import EdvitalHubWeb.CoreComponents
+      import TechvitalHubWeb.CoreComponents
 
       # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS
@@ -101,9 +101,9 @@ defmodule EdvitalHubWeb do
   def verified_routes do
     quote do
       use Phoenix.VerifiedRoutes,
-        endpoint: EdvitalHubWeb.Endpoint,
-        router: EdvitalHubWeb.Router,
-        statics: EdvitalHubWeb.static_paths()
+        endpoint: TechvitalHubWeb.Endpoint,
+        router: TechvitalHubWeb.Router,
+        statics: TechvitalHubWeb.static_paths()
     end
   end
 
