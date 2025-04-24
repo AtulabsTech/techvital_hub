@@ -430,7 +430,7 @@ defmodule TechvitalHubWeb.HomeComponents do
   def nav_bar(assigns) do
     ~H"""
     <div class={
-      if @current_user == nil,
+      if is_nil(@current_user),
         do:
           "md:flex items-center justify-between border-b border-zinc-100 py-4 text-sm md:text-base lg:text-lg font-maven",
         else:
@@ -449,7 +449,7 @@ defmodule TechvitalHubWeb.HomeComponents do
           id="hamburger"
           phx-hook="MobileNav"
           class={
-            if @current_user == nil,
+            if is_nil(@current_user),
               do: "md:hidden cursor-pointer hover:bg-zinc-200/80 rounded-lg p-2",
               else: "hidden"
           }
@@ -460,6 +460,14 @@ defmodule TechvitalHubWeb.HomeComponents do
       </div>
       <ul class="relative hidden md:flex z-10 items-center justify-between md:space-x-10 lg:space-x-20">
         <%= if @current_user do %>
+          <li class="cursor-pointer">Learn</li>
+          <li class="cursor-pointer">Discover</li>
+          <li class="cursor-pointer">Contribute</li>
+          <li class="cursor-pointer">
+            <div class="flex items-center h-6 w-12 bg-orange-600 rounded-full border-4 border-green-600">
+              <span class="text-center mx-auto">6</span>
+            </div>
+          </li>
           <li class="font-semibold leading-6 text-zinc-900 hover:text-zinc-700">
             <.user_profile_toggler current_user={@current_user} />
           </li>
