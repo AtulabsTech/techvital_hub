@@ -57,7 +57,7 @@ defmodule TechvitalHubWeb.DashboardLive.Index do
      |> assign(
        tracks: [
          %{
-           name: "HTML and CSS",
+           name: "Frontend",
            completed: 0,
            total: 150,
            icon: "programming-html"
@@ -69,7 +69,7 @@ defmodule TechvitalHubWeb.DashboardLive.Index do
            icon: "programming-elixir"
          },
          %{
-           name: "JavaScript",
+           name: "Phoenix",
            completed: 0,
            total: 150,
            icon: "programming-js"

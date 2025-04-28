@@ -57,20 +57,31 @@
         <h2 class="text-xl font-semibold mb-4">Your Tracks</h2>
         <div class="grid grid-cols-2 gap-4">
           <%= for track <- @tracks do %>
-            <div class="flex flex-col space-y-2">
-              <HomeComponents.progress
-                variant="radial"
-                text={"#{Float.round(track.completed / track.total * 100, 0)}%"}
-                value={track.completed / track.total * 100}
-              />
-              <div class="flex items-center space-x-4">
-                <div class="flex-1">
-                  <div class="flex justify-between items-center mb-1">
-                    <span class="font-medium">{track.name}</span>
+            <.link
+              href={
+                case track.name do
+                  "Frontend" -> ~p"/tracks/frontend"
+                  "Elixir" -> ~p"/tracks/elixir"
+                  "Phoenix" -> ~p"/tracks/phoenix"
+                end
+              }
+              class="flex items-center space-x-4 bg-white hover:shadow-2xl hover:shadow-gray-400 transition duration-500 hover:scale-105 rounded-md p-4"
+            >
+              <div class="flex flex-col space-y-2">
+                <HomeComponents.progress
+                  variant="radial"
+                  text={"#{Float.round(track.completed / track.total * 100, 0)}%"}
+                  value={track.completed / track.total * 100}
+                />
+                <div class="flex items-center space-x-4">
+                  <div class="flex-1">
+                    <div class="flex justify-between items-center mb-1">
+                      <span class="font-medium">{track.name}</span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </.link>
           <% end %>
         </div>
       </div>

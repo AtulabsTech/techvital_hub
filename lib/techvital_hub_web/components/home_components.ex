@@ -438,9 +438,15 @@ defmodule TechvitalHubWeb.HomeComponents do
     }>
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-4">
-          <a href="/">
-            <img src={~p"/images/default.svg"} width="46" />
-          </a>
+          <%= if @current_user do %>
+            <a href="/dashboard">
+              <img src={~p"/images/default.svg"} width="46" />
+            </a>
+          <% else %>
+            <a href="/">
+              <img src={~p"/images/default.svg"} width="46" />
+            </a>
+          <% end %>
           <p class="text-brand rounded-full px-2 font-medium leading-6 text-4xl md:text-2xl lg:text-4xl">
             TechVital Hub
           </p>

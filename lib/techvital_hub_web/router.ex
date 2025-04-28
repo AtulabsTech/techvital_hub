@@ -71,6 +71,10 @@ defmodule TechvitalHubWeb.Router do
       ] do
       live "/dashboard", DashboardLive.Index, :index
 
+      live "/tracks/elixir", TrackLive.Elixir, :elixir
+      live "/tracks/frontend", TrackLive.Frontend, :frontend
+      live "/tracks/phoenix", TrackLive.Phoenix, :phoenix
+
       live "/settings", UserSettingsLive, :edit
       live "/settings/confirm_email/:token", UserSettingsLive, :confirm_email
     end
