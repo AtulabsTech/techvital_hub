@@ -64,6 +64,22 @@ defmodule TechvitalHub.AccountsTest do
     end
   end
 
+  describe "list_students" do
+    test "returns an empty list if there are no students" do
+      assert [] == Accounts.list_students()
+    end
+
+    test "returns a list of students (admin roles false)" do
+      user_fixture()
+      user_fixture()
+
+      assert length(Accounts.list_students()) == 2
+      [user1 | [_user2]] = Accounts.list_students()
+      assert user1.first_name == "John"
+      assert user1.last_name == "Doe"
+    end
+  end
+
   describe "register_user/1" do
     test "requires email and password to be set" do
       {:error, changeset} = Accounts.register_user(%{})
@@ -208,7 +224,7 @@ defmodule TechvitalHub.AccountsTest do
   describe "change_user_registration/2" do
     test "returns a changeset" do
       assert %Ecto.Changeset{} = changeset = Accounts.change_user_registration(%User{})
-      assert changeset.required == [:password, :email, :first_name, :last_name]
+      assert changeset.required == [:password, :email, :first_name, :last_name, :is_admin]
     end
 
     test "allows fields to be set" do

@@ -76,6 +76,24 @@ defmodule TechvitalHub.Accounts do
   """
   def get_users!, do: Repo.all(User)
 
+  @doc """
+  List all users without admin role.
+
+  Returns an empty list if there are no users
+
+  ## Example
+
+      iex> list_students()
+      [%User{}, %User{}, ...]
+
+      iex> list_students()
+      ** []
+
+  """
+  def list_students do
+    Repo.all(from u in User, where: u.is_admin == false)
+  end
+
   ## User registration
 
   @doc """
