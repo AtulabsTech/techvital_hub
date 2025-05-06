@@ -38,7 +38,7 @@ defmodule TechvitalHubWeb.UserAuth do
       |> renew_session()
       |> put_token_in_session(token)
       |> maybe_write_remember_me_cookie(token, params)
-      |> redirect(to: user_return_to || signed_in_path(conn))
+      |> redirect(to: user_return_to || signed_in_path(conn, user))
     else
       conn
       |> put_flash(:error, "You must confirm your email address before logging in")
@@ -178,9 +178,25 @@ defmodule TechvitalHubWeb.UserAuth do
     socket = mount_current_user(socket, session)
 
     if socket.assigns.current_user do
-      {:halt, Phoenix.LiveView.redirect(socket, to: signed_in_path(socket))}
+      {:halt,
+       Phoenix.LiveView.redirect(socket, to: signed_in_path(socket, socket.assigns.current_user))}
     else
       {:cont, socket}
+    end
+  end
+
+  def on_mount(:admin_only, _params, session, socket) do
+    socket = mount_current_user(socket, session)
+
+    if socket.assigns.current_user && socket.assigns.current_user.is_admin do
+      {:cont, socket}
+    else
+      socket =
+        socket
+        |> Phoenix.LiveView.put_flash(:error, "You must be an admin to access this page.")
+        |> Phoenix.LiveView.redirect(to: ~p"/")
+
+      {:halt, socket}
     end
   end
 
@@ -198,7 +214,7 @@ defmodule TechvitalHubWeb.UserAuth do
   def redirect_if_user_is_authenticated(conn, _opts) do
     if conn.assigns[:current_user] do
       conn
-      |> redirect(to: signed_in_path(conn))
+      |> redirect(to: signed_in_path(conn, conn.assigns.current_user))
       |> halt()
     else
       conn
@@ -232,6 +248,23 @@ defmodule TechvitalHubWeb.UserAuth do
     end
   end
 
+  def admin_only(conn, _opts) do
+    if conn.assigns[:current_user] do
+      if conn.assigns.current_user.is_admin do
+        conn
+      else
+        conn
+        |> put_flash(:error, "You must be an admin to access this page")
+        |> redirect(to: ~p"/dashboard")
+        |> halt()
+      end
+
+      conn
+    else
+      conn
+    end
+  end
+
   defp put_token_in_session(conn, token) do
     conn
     |> put_session(:user_token, token)
@@ -244,5 +277,7 @@ defmodule TechvitalHubWeb.UserAuth do
 
   defp maybe_store_return_to(conn), do: conn
 
-  defp signed_in_path(_conn), do: ~p"/dashboard"
+  defp signed_in_path(_conn, user) do
+    if user.is_admin, do: ~p"/admin/dashboard", else: ~p"/dashboard"
+  end
 end
