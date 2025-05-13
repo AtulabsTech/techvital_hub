@@ -1,132 +1,86 @@
-<div class="max-w-7xl text-white mx-auto px-4 sm:px-6 lg:px-8 py-8">
-  <!-- Header Section -->
-    
-    
-<!-- Main Grid -->
-  <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
-    <!-- Progress Section -->
-    <div class="lg:col-span-3">
-      <div class="flex items-center space-x-4">
-        <div class="font-maven">
-          <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold mb-2">
-            Welcome back, {@current_user.first_name}!
-          </h1>
-          <p class="text-black text-md md:text-lg lg:text-xl">
-            Develop and sharpen your functional web dev skills with coding exercises and guidance. Learn at your own pace, in your own time.
-          </p>
-        </div>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
+    <div>
+      <h1 class="text-3xl font-bold mb-1">Hello, {@current_user.first_name}!</h1>
+      <p :if={@current_course} class="text-white">You're 37% closer to your goal. ⚡</p>
+      <p :if={!@current_course} class="text-white">
+        Welcome to TechVital Hub! We have a course with the best selection of modules just for you.
+      </p>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4 md:mt-0">
+      <div class="bg-yellow-100 rounded-lg px-4 py-2 flex flex-col items-center">
+        <span class="text-xl font-bold text-yellow-600">{@stats.points}</span>
+        <span class="text-xs text-gray-700">XP</span>
       </div>
-      <div class="p-6 mb-8">
-        <h2 class="text-lg md:text-xl lg:text-2xl font-semibold mb-4 font-maven">
-          Where to Start...
-        </h2>
-        <div class="flex text-center justify-between">
-          <div class="flex flex-col bg-white items-center space-x-4 w-[33%] hover:shadow-2xl hover:shadow-gray-400 transition duration-500 hover:scale-105 rounded-md pb-4">
-            <img
-              src={~p"/images/illustrations/sololearn.svg"}
-              class="w-[80px] h-[80px] lg:w-[200px] lg:h-[200px] rounded-full p-2 left-12"
-            />
-            <p class="text-black ">Continue learning on your tracks</p>
-          </div>
-          <div class="flex flex-col bg-white items-center space-x-4 w-[33%] hover:shadow-2xl hover:shadow-gray-400 transition duration-500 hover:scale-105 rounded-md pb-4">
-            <img
-              src={~p"/images/illustrations/sololearn.svg"}
-              class="w-[80px] h-[80px] lg:w-[200px] lg:h-[200px] rounded-full p-2 left-12 top-8"
-            />
-            <p class="text-black ">Get a one on one Mentor to help you</p>
-          </div>
-          <div class="flex flex-col bg-white items-center space-x-4 w-[33%] hover:shadow-2xl hover:shadow-gray-400 transition duration-500 hover:scale-105 rounded-md pb-4">
-            <img
-              src={~p"/images/illustrations/sololearn.svg"}
-              class="w-[80px] h-[80px] lg:w-[200px] lg:h-[200px] rounded-full p-2 left-12 top-8"
-            />
-            <p class="text-black ">Contribute to the Community</p>
-          </div>
-        </div>
+      <div class="bg-purple-100 rounded-lg px-4 py-2 flex flex-col items-center">
+        <span class="text-xl font-bold text-purple-600">{@stats.courses}</span>
+        <span class="text-xs text-gray-700">Modules</span>
       </div>
-
-      <div>
-        <h2 class="text-xl font-semibold mb-4">Popular Posts from Mentors</h2>
-        <div></div>
+      <div class="bg-yellow-50 rounded-lg px-4 py-2 flex flex-col items-center">
+        <span class="text-xl font-bold text-yellow-700">100</span>
+        <span class="text-xs text-gray-700">
+          <Icons.flame_icon />
+        </span>
+      </div>
+      <div class="bg-purple-50 rounded-lg px-4 py-2 flex flex-col items-center">
+        <span class="text-xl font-bold text-purple-700">{@stats.challenges}</span>
+        <span class="text-xs text-gray-700">Challenges</span>
       </div>
     </div>
-    
-<!-- Leaderboard Section -->
-    <div class="lg:col-span-2 space-y-2">
-      <div class="p-6 text-black">
-        <h2 class="text-xl font-semibold mb-4">Your Tracks</h2>
-        <div class="grid grid-cols-2 gap-4">
-          <%= for track <- @tracks do %>
-            <.link
-              href={
-                case track.name do
-                  "Frontend" -> ~p"/tracks/frontend"
-                  "Elixir" -> ~p"/tracks/elixir"
-                  "Phoenix" -> ~p"/tracks/phoenix"
-                end
-              }
-              class="flex items-center space-x-4 bg-white hover:shadow-2xl hover:shadow-gray-400 transition duration-500 hover:scale-105 rounded-md p-4"
-            >
-              <div class="flex flex-col space-y-2">
-                <HomeComponents.progress
-                  variant="radial"
-                  text={"#{Float.round(track.completed / track.total * 100, 0)}%"}
-                  value={track.completed / track.total * 100}
-                />
-                <div class="flex items-center space-x-4">
-                  <div class="flex-1">
-                    <div class="flex justify-between items-center mb-1">
-                      <span class="font-medium">{track.name}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="lg:col-span-2 flex flex-col gap-8">
+      <CommonComponents.current_module_card current_course={@current_course} />
+
+      <div>
+        <div class="md:flex items-center justify-between mb-2">
+          <h3 class="text-lg font-bold">Recommended For You</h3>
+          <div class="flex gap-2 text-xs">
+            <%= for button <- ["All", "Beginner", "Intermediate", "Advanced"] do %>
+              <button class="px-2 py-1 rounded bg-gray-200 text-gray-700">{button}</button>
+            <% end %>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <%= for course <- @courses do %>
+            <.link navigate={~p"/courses/#{course.id}"}>
+              <CommonComponents.module_card course={course} />
             </.link>
           <% end %>
         </div>
-      </div>
-      <div class="p-6 bg-gradient-to-b from-green-400 to-teal-500 rounded-md shadow-xl">
-        <h2 class="text-2xl font-bold mb-6 text-center text-white flex items-center justify-center gap-2">
-          <img src={~p"/images/icons/trophy.svg"} class="w-8 h-8" alt="Trophy" /> LEADERBOARD
-          <img src={~p"/images/icons/trophy.svg"} class="w-8 h-8" alt="Trophy" />
-        </h2>
-        
-<!-- Leaderboard Header -->
-        <div class="bg-blue-600 text-white rounded-t-lg p-3 grid grid-cols-6 items-center text-center">
-          <div>Rank</div>
-          <div class="col-span-2">Player</div>
-          <div>Points</div>
-          <div>Level</div>
-          <div>Wins</div>
+        <div class="mt-4 text-right">
+          <.link navigate={~p"/courses"} class="text-purple-600 hover:underline text-sm">
+            See all courses →
+          </.link>
         </div>
-        
-<!-- Leaderboard Items -->
-        <div class="space-y-2 mt-2">
-          <%= for {player, index} <- Enum.with_index(@top_players, 1) do %>
-            <div class="grid grid-cols-6 items-center text-center bg-white/20 backdrop-blur-sm p-3 rounded-lg text-white">
-              <div class="text-2xl font-bold">
-                <%= case index do %>
-                  <% 1 -> %>
-                    <span class="text-yellow-300">🥇</span>
-                  <% 2 -> %>
-                    <span class="text-gray-300">🥈</span>
-                  <% 3 -> %>
-                    <span class="text-amber-600">🥉</span>
-                  <% _ -> %>
-                    {index}
-                <% end %>
-              </div>
-              <div class="col-span-2 flex items-center gap-2 justify-center">
-                <img src={player.avatar_url} class="w-10 h-10 rounded-full" />
-                <span>{player.name}</span>
-              </div>
-              <div>{player.points}</div>
-              <div>{player.level}</div>
-              <div>{player.wins}</div>
-            </div>
+      </div>
+    </div>
+    
+<!-- Right: Streak, XP, Job Board -->
+    <div class="flex flex-col gap-8">
+      <CommonComponents.overall_progress />
+
+      <%!-- <!-- Future Leader Board -->
+      <div class="bg-gradient-to-br from-purple-400 to-blue-500 rounded-xl shadow p-6 text-white">
+        <div class="font-bold text-lg mb-2">The #1 job board for UI Designer!</div>
+        <p class="mb-4 text-sm">
+          Explore design job opportunities with selected offers by top companies seeking to hire UI Designers.
+        </p>
+        <div class="flex flex-wrap gap-2 mb-4">
+          <%= for job <- @job_board do %>
+            <span class={"px-3 py-1 rounded-full text-xs font-semibold " <> job.color <> " bg-opacity-80"}>
+              {job.title}
+            </span>
           <% end %>
         </div>
-      </div>
+        <a
+          href="#"
+          class="inline-block bg-white text-purple-700 font-bold px-4 py-2 rounded hover:bg-gray-100 transition"
+        >
+          Find a job
+        </a>
+      </div> --%>
     </div>
   </div>
 </div>

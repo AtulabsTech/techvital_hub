@@ -439,7 +439,10 @@ defmodule TechvitalHubWeb.HomeComponents do
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-4">
           <%= if @current_user do %>
-            <a href="/dashboard">
+            <a :if={@current_user.role == :admin} href="/admin/dashboard">
+              <img src={~p"/images/default.svg"} width="46" />
+            </a>
+            <a :if={@current_user.role != :admin} href="/dashboard">
               <img src={~p"/images/default.svg"} width="46" />
             </a>
           <% else %>
@@ -447,7 +450,7 @@ defmodule TechvitalHubWeb.HomeComponents do
               <img src={~p"/images/default.svg"} width="46" />
             </a>
           <% end %>
-          <p class="text-brand rounded-full px-2 font-medium leading-6 text-4xl md:text-2xl lg:text-4xl">
+          <p class="hidden md:block text-brand rounded-full px-2 font-medium leading-6 text-4xl md:text-2xl lg:text-4xl">
             TechVital Hub
           </p>
         </div>
@@ -469,13 +472,29 @@ defmodule TechvitalHubWeb.HomeComponents do
           <li class="cursor-pointer">Learn</li>
           <li class="cursor-pointer">Discover</li>
           <li class="cursor-pointer">Contribute</li>
-          <li class="cursor-pointer">
-            <div class="flex items-center h-6 w-12 bg-orange-600 rounded-full border-4 border-green-600">
-              <span class="text-center mx-auto">6</span>
-            </div>
-          </li>
           <li class="font-semibold leading-6 text-zinc-900 hover:text-zinc-700">
-            <.user_profile_toggler current_user={@current_user} />
+            <ul class="flex">
+              <li class="mr-2">
+                <button class="ml-4 p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                  <svg
+                    class="h-6 w-6"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                    />
+                  </svg>
+                </button>
+              </li>
+              <li><.user_profile_toggler current_user={@current_user} /></li>
+            </ul>
           </li>
         <% else %>
           <ul class="hidden md:flex">
@@ -536,11 +555,16 @@ defmodule TechvitalHubWeb.HomeComponents do
           </div>
           <div class="flex flex-col mt-4 space-y-1">
             <div class="hover:bg-gray-200 p-2 rounded-lg">
-              <.link navigate={~p"/dashboard"} class="leading-6 text-zinc-900">
+              <.link
+                navigate={
+                  if @current_user.role == :admin, do: ~p"/admin/dashboard", else: ~p"/dashboard"
+                }
+                class="leading-6 text-zinc-900"
+              >
                 Dashboard
               </.link>
             </div>
-            <div class="hover:bg-gray-200 p-2 rounded-lg">
+            <div :if={@current_user.role != :admin} class="hover:bg-gray-200 p-2 rounded-lg">
               <.link navigate={~p"/dashboard"} class="leading-6 text-zinc-900">
                 Your Journey
               </.link>
@@ -782,11 +806,9 @@ defmodule TechvitalHubWeb.HomeComponents do
 
   defp user_profile_toggler(assigns) do
     ~H"""
-    <div>
-      <div class="cursor-pointer" phx-click={toggle_profile_modal()}>
-        <.avatar alt={"#{@current_user.first_name} " <> "#{@current_user.last_name}"} />
-        <CoreComponents.icon name="hero-ellipsis-vertical" class="h-8 w-8 text-zinc-900" />
-      </div>
+    <div class="cursor-pointer" phx-click={toggle_profile_modal()}>
+      <.avatar alt={"#{@current_user.first_name} " <> "#{@current_user.last_name}"} />
+      <CoreComponents.icon name="hero-ellipsis-vertical" class="h-8 w-8 text-zinc-900" />
     </div>
     """
   end

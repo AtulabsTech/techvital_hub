@@ -1,4 +1,4 @@
-defmodule TechvitalHubWeb.TrackLive.Frontend do
+defmodule TechvitalHubWeb.AdminDashboardLive.Index do
   use TechvitalHubWeb, :live_view
 
   @impl Phoenix.LiveView

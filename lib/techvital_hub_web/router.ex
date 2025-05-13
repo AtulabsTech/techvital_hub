@@ -75,12 +75,33 @@ defmodule TechvitalHubWeb.Router do
       ] do
       live "/dashboard", DashboardLive.Index, :index
 
-      live "/tracks/elixir", TrackLive.Elixir, :elixir
-      live "/tracks/frontend", TrackLive.Frontend, :frontend
-      live "/tracks/phoenix", TrackLive.Phoenix, :phoenix
+      live "/courses", CourseLive.Index, :learner
+
+      live "/courses/:id", CourseLive.Show, :learner
 
       live "/settings", UserSettingsLive, :edit
       live "/settings/confirm_email/:token", UserSettingsLive, :confirm_email
+    end
+  end
+
+  scope "/admin", TechvitalHubWeb do
+    pipe_through [:browser, :admin_only, :admin]
+
+    live_session :admin_only,
+      on_mount: [
+        {TechvitalHubWeb.UserAuth, :ensure_authenticated},
+        {TechvitalHubWeb.UserAuth, :admin_only}
+      ] do
+      live "/dashboard", AdminDashboardLive.Index, :index
+
+      live "/users", UserLive.Index, :index
+
+      live "/courses", CourseLive.Index, :admin
+      live "/courses/new", CourseLive.Index, :new
+      live "/courses/:id/edit", CourseLive.Index, :edit
+
+      live "/courses/:id", CourseLive.Show, :admin
+      live "/courses/:id/show/edit", CourseLive.Show, :edit
     end
   end
 

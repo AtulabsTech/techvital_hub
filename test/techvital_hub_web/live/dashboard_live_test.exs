@@ -14,5 +14,26 @@ defmodule TechvitalHubWeb.DashboardLiveTest do
 
       assert html =~ "Dashboard"
     end
+
+    test "lists courses", %{conn: conn} do
+      {:ok, _lv, html} = conn |> log_in_user(user_fixture()) |> live(~p"/dashboard")
+
+      assert html =~ "You Tracks"
+      assert html =~ "Elixir"
+      assert html =~ "HTML and CSS"
+      assert html =~ "JavaScript"
+    end
+
+    test "clicking a course takes you to the course page", %{conn: conn} do
+      {:ok, _lv, _html} =
+        conn
+        |> log_in_user(user_fixture())
+        |> live(~p"/dashboard")
+        |> element(~s|a:fl-contains("Elixir")|)
+        |> render_click()
+        |> follow_redirect(conn, "/courses/elixir")
+
+      assert conn.resp_body =~ "Elixir"
+    end
   end
 end
