@@ -17,9 +17,11 @@ defmodule TechvitalHub.Repo.Migrations.CreateUserCoursesTable do
       timestamps()
     end
 
-    create index(:user_courses, [:user_id])
+    # create index(:user_courses, [:user_id])
     create index(:user_courses, [:course_id])
 
-    create unique_index(:user_courses, [:user_id, :course_id], where: "is_active = true")
+    create unique_index(:user_courses, [:user_id, :course_id])
+
+    create unique_index(:user_courses, [:user_id], where: "is_active = true")
   end
 end

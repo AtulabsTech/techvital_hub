@@ -6,7 +6,6 @@ defmodule TechvitalHubWeb.CommonComponents do
   alias TechvitalHubWeb.HomeComponents
 
   attr :active_course, :map, required: true
-  # attr(:continue_learning, :map, required: true)
 
   def current_module_card(assigns) do
     ~H"""
@@ -40,63 +39,8 @@ defmodule TechvitalHubWeb.CommonComponents do
           <button class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition">
             Resume learning
           </button>
-          <%!-- {Calendar.strftime(@time, "%_I:%M:%S %p")} --%>
         </div>
       </div>
-
-      <%!--
-      <!-- Current Module section -->
-          <div class="bg-white rounded-lg shadow overflow-hidden">
-            <div class="p-6">
-              <h2 class="text-lg font-medium text-gray-900 mb-4">Current Module</h2>
-              <div class="flex items-center">
-                <div class="flex-shrink-0 mr-4">
-                  <img
-                    class="h-24 w-32 object-cover rounded"
-                    src="/images/person-typing.jpg"
-                    alt="Person typing on laptop"
-                  />
-                </div>
-                <div>
-                  <h3 class="text-lg font-medium text-gray-900">The Residents' Environment</h3>
-                  <div class="flex items-center text-sm text-gray-500">
-                    <span>Section 2</span>
-                    <span class="mx-2">•</span>
-                    <span>Module 3</span>
-                  </div>
-                  <div class="mt-2">
-                    <span class="inline-flex items-center px-3 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                      75% COMPLETE
-                    </span>
-                  </div>
-                  <p class="mt-2 text-sm text-gray-500">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since when an unknown printer took a galley of type and scrambled it to make a type.
-                  </p>
-                  <div class="mt-3">
-                    <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-                      RESUME
-                    </button>
-                  </div>
-                  <div class="mt-3 flex items-center text-sm text-gray-500">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="h-5 w-5 mr-1 text-gray-400"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
-                    30 minutes
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-       --%>
       <div
         :if={!@active_course}
         class="bg-white rounded-xl shadow p-6 flex flex-col md:flex-row items-center gap-6"
@@ -144,7 +88,7 @@ defmodule TechvitalHubWeb.CommonComponents do
         <h2 class="text-lg font-medium text-gray-900 mb-4">Overall Progress</h2>
         <div class="flex flex-col items-center">
           <div class="relative h-32 w-32">
-            <HomeComponents.progress class="w-full" variant="radial" text="75%" value={75} />
+            <HomeComponents.progress class="w-full h-full" variant="radial" text="75%" value={75} />
           </div>
           <div class="mt-4 flex justify-between w-full">
             <div class="text-center">

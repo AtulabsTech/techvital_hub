@@ -20,8 +20,6 @@ defmodule TechvitalHub.Courses.UserCourse do
   end
 
   def changeset(user_course, attrs) do
-    IO.inspect(attrs, label: "attrstts")
-
     user_course
     |> cast(attrs, [
       :user_id,

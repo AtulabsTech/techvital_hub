@@ -20,14 +20,24 @@ defmodule TechvitalHubWeb.CourseLive.Show do
 
   @impl true
   def handle_event("start", %{"id" => id}, socket) do
-    case Courses.start_course(id, socket.assigns.current_user) do
-      {:ok, course} ->
-        {:noreply,
-         socket
-         |> assign(:current_course, course)
-         |> put_flash(:info, "Course started successfully")}
+    case Courses.get_active_course(socket.assigns.current_user) do
+      nil ->
+        case Courses.start_course(id, socket.assigns.current_user) do
+          {:ok, course} ->
+            {:noreply,
+             socket
+             |> assign(:current_course, course)
+             |> put_flash(:info, "You have started a new course")}
 
-      {:error, _} ->
+          {:error, _} ->
+            {:noreply, socket}
+        end
+
+      _course ->
+        Courses.deactivate_current_course(socket.assigns.current_user)
+
+        Courses.start_course(id, socket.assigns.current_user)
+
         {:noreply, socket}
     end
   end

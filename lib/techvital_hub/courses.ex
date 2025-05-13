@@ -42,19 +42,6 @@ defmodule TechvitalHub.Courses do
   end
 
   @doc """
-  Returns the list of courses a user is enrolled in.
-
-  ## Examples
-
-      iex> list_user_courses(user)
-      [%Course{}, ...]
-
-  """
-  def list_user_active_courses(user) do
-    Repo.all(from c in Course, where: c.user_id == ^user.id and c.is_active == true)
-  end
-
-  @doc """
   Returns the list of featured courses.
 
   ## Examples
@@ -95,22 +82,32 @@ defmodule TechvitalHub.Courses do
       {:error, :not_found}
   """
   def start_course(id, user) do
-    case Repo.get(Course, id) do
-      nil ->
-        {:error, :not_found}
+    Repo.transaction(fn ->
+      from(uc in UserCourse,
+        where: uc.user_id == ^user.id and uc.is_active == true
+      )
+      |> Repo.update_all(set: [is_active: false])
 
-      course ->
-        UserCourse.changeset(%UserCourse{}, %{
-          user_id: user.id,
-          course_id: course.id,
-          status: :in_progress,
-          progress_percentage: 0,
-          last_accessed_at: DateTime.utc_now(),
-          completed_at: nil,
-          is_active: true
-        })
-        |> Repo.insert(returning: [:user_id, :course_id])
-    end
+      case Repo.get(Course, id) do
+        nil ->
+          {:error, :not_found}
+
+        course ->
+          UserCourse.changeset(%UserCourse{}, %{
+            user_id: user.id,
+            course_id: course.id,
+            status: :in_progress,
+            progress_percentage: 0,
+            last_accessed_at: DateTime.utc_now(),
+            completed_at: nil,
+            is_active: true
+          })
+          |> Repo.insert(
+            on_conflict: {:replace, [:status, :is_active, :last_accessed_at]},
+            conflict_target: [:user_id, :course_id]
+          )
+      end
+    end)
   end
 
   @doc """
@@ -189,17 +186,8 @@ defmodule TechvitalHub.Courses do
   def get_active_course(user) do
     Repo.one(
       from uc in UserCourse,
-        join: c in Course,
-        on: uc.course_id == c.id,
         where: uc.user_id == ^user.id and uc.is_active == true,
-        select: %{
-          course: c,
-          status: uc.status,
-          is_active: uc.is_active,
-          last_accessed_at: uc.last_accessed_at,
-          progress_percentage: uc.progress_percentage,
-          completed_at: uc.completed_at
-        }
+        preload: [:course]
     )
   end
 
@@ -227,5 +215,18 @@ defmodule TechvitalHub.Courses do
         },
         order_by: [desc: uc.last_accessed_at]
     )
+  end
+
+  @doc """
+  Deactivates the currently active course for a user.
+
+  ## Examples
+
+      iex> deactivate_current_course(user)
+      {:ok, %UserCourse{}}
+  """
+  def deactivate_current_course(user) do
+    from(uc in UserCourse, where: uc.user_id == ^user.id and uc.is_active == true)
+    |> Repo.update_all(set: [is_active: false])
   end
 end

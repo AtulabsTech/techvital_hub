@@ -4,9 +4,36 @@ defmodule TechvitalHubWeb.CourseLiveTest do
   import Phoenix.LiveViewTest
   import TechvitalHub.CoursesFixtures
 
-  @create_attrs %{description: "some description", difficulty_level: "some difficulty_level", duration_hours: 42, is_featured: true, phase: "some phase", position: 42, thumbnail_url: "some thumbnail_url", title: "some title"}
-  @update_attrs %{description: "some updated description", difficulty_level: "some updated difficulty_level", duration_hours: 43, is_featured: false, phase: "some updated phase", position: 43, thumbnail_url: "some updated thumbnail_url", title: "some updated title"}
-  @invalid_attrs %{description: nil, difficulty_level: nil, duration_hours: nil, is_featured: false, phase: nil, position: nil, thumbnail_url: nil, title: nil}
+  @create_attrs %{
+    description: "some description",
+    difficulty_level: "some difficulty_level",
+    duration_hours: 42,
+    is_featured: true,
+    phase: "some phase",
+    position: 42,
+    thumbnail_url: "some thumbnail_url",
+    title: "some title"
+  }
+  @update_attrs %{
+    description: "some updated description",
+    difficulty_level: "some updated difficulty_level",
+    duration_hours: 43,
+    is_featured: false,
+    phase: "some updated phase",
+    position: 43,
+    thumbnail_url: "some updated thumbnail_url",
+    title: "some updated title"
+  }
+  @invalid_attrs %{
+    description: nil,
+    difficulty_level: nil,
+    duration_hours: nil,
+    is_featured: false,
+    phase: nil,
+    position: nil,
+    thumbnail_url: nil,
+    title: nil
+  }
 
   defp create_course(_) do
     course = course_fixture()
