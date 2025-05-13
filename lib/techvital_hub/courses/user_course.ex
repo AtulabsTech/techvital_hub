@@ -1,0 +1,24 @@
+defmodule TechvitalHub.Courses.UserCourse do
+  use Ecto.Schema
+  import Ecto.Changeset
+
+  @primary_key false
+  schema "user_courses" do
+    belongs_to :user, TechvitalHub.Accounts.User, type: :binary_id
+    belongs_to :course, TechvitalHub.Courses.Course, type: :binary_id
+
+    field :status, Ecto.Enum,
+      values: [:enrolled, :in_progress, :completed, :paused],
+      default: :enrolled
+
+    field :is_active, :boolean, default: false
+
+    timestamps()
+  end
+
+  def changeset(user_course, attrs) do
+    user_course
+    |> cast(attrs, [:user_id, :course_id, :status, :is_active])
+    |> validate_required([:user_id, :course_id, :status, :is_active])
+  end
+end

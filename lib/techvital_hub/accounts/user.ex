@@ -18,6 +18,8 @@ defmodule TechvitalHub.Accounts.User do
     field :current_password, :string, virtual: true, redact: true
     field :confirmed_at, :utc_datetime
 
+    many_to_many :courses, TechvitalHub.Courses.Course, join_through: "users_courses"
+
     timestamps(type: :utc_datetime)
   end
 
