@@ -91,7 +91,7 @@ defmodule TechvitalHub.Accounts do
 
   """
   def list_students do
-    Repo.all(from u in User, where: u.is_admin == false)
+    Repo.all(from u in User, where: u.role == "learner")
   end
 
   ## User registration

@@ -188,7 +188,7 @@ defmodule TechvitalHubWeb.UserAuth do
   def on_mount(:admin_only, _params, session, socket) do
     socket = mount_current_user(socket, session)
 
-    if socket.assigns.current_user && socket.assigns.current_user.is_admin do
+    if socket.assigns.current_user && socket.assigns.current_user.role == "admin" do
       {:cont, socket}
     else
       socket =
@@ -250,7 +250,7 @@ defmodule TechvitalHubWeb.UserAuth do
 
   def admin_only(conn, _opts) do
     if conn.assigns[:current_user] do
-      if conn.assigns.current_user.is_admin do
+      if conn.assigns.current_user.role == "admin" do
         conn
       else
         conn
@@ -262,6 +262,9 @@ defmodule TechvitalHubWeb.UserAuth do
       conn
     else
       conn
+      |> put_flash(:error, "You must log in to access this page.")
+      |> redirect(to: ~p"/login")
+      |> halt()
     end
   end
 
@@ -278,6 +281,6 @@ defmodule TechvitalHubWeb.UserAuth do
   defp maybe_store_return_to(conn), do: conn
 
   defp signed_in_path(_conn, user) do
-    if user.is_admin, do: ~p"/admin/dashboard", else: ~p"/dashboard"
+    if user.role == :admin, do: ~p"/admin/dashboard", else: ~p"/dashboard"
   end
 end

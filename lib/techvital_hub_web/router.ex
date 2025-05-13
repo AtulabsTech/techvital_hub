@@ -13,6 +13,10 @@ defmodule TechvitalHubWeb.Router do
     plug :fetch_current_user
   end
 
+  pipeline :admin do
+    plug TechvitalHubWeb.Plugs.RoleCheck, :admin
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end

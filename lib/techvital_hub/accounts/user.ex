@@ -10,6 +10,7 @@ defmodule TechvitalHub.Accounts.User do
   schema "users" do
     field :email, :string
     field :first_name, :string
+    field :role, :string, default: "learner"
     field :is_oauth_user, :boolean, default: false
     field :last_name, :string
     field :password, :string, virtual: true, redact: true
@@ -45,8 +46,8 @@ defmodule TechvitalHub.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :first_name, :last_name, :password])
-    |> validate_required([:first_name, :last_name])
+    |> cast(attrs, [:email, :first_name, :last_name, :password, :role])
+    |> validate_required([:first_name, :last_name, :role])
     |> validate_email(opts)
     |> validate_password(opts)
   end
