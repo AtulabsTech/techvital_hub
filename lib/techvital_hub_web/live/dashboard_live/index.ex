@@ -24,7 +24,7 @@ defmodule TechvitalHubWeb.DashboardLive.Index do
      |> assign(current_user: user)
      |> assign(stats: stats)
      |> assign(active_course: Courses.get_active_course(user))
-     |> assign(courses: Courses.list_courses())}
+     |> assign(courses: Courses.list_courses(nil))}
   end
 
   @impl Phoenix.LiveView
@@ -35,5 +35,12 @@ defmodule TechvitalHubWeb.DashboardLive.Index do
      assign(socket,
        active_course: active_course
      )}
+  end
+
+  @impl Phoenix.LiveView
+  def handle_event("filter", %{"filter" => filter}, socket) do
+    filtered_courses = Courses.list_courses(String.downcase(filter))
+
+    {:noreply, socket |> assign(courses: filtered_courses)}
   end
 end

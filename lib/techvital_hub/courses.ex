@@ -18,7 +18,16 @@ defmodule TechvitalHub.Courses do
       [%Course{}, ...]
 
   """
-  def list_courses do
+  def list_courses(filter) when filter == "all" do
+    Repo.all(Course)
+  end
+
+  def list_courses(filter) when not is_nil(filter) do
+    IO.inspect(filter)
+    Repo.all(from c in Course, where: c.difficulty_level == ^filter) |> IO.inspect()
+  end
+
+  def list_courses(_filters) do
     Repo.all(Course)
   end
 

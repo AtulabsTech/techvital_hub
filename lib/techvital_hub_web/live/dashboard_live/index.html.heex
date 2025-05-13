@@ -38,7 +38,13 @@
           <h3 class="text-lg font-bold">Recommended For You</h3>
           <div class="flex gap-2 text-xs">
             <%= for button <- ["All", "Beginner", "Intermediate", "Advanced"] do %>
-              <button class="px-2 py-1 rounded bg-gray-200 text-gray-700">{button}</button>
+              <button
+                class="px-2 py-1 rounded bg-gray-200 text-gray-700"
+                phx-click="filter"
+                phx-value-filter={button}
+              >
+                {button}
+              </button>
             <% end %>
           </div>
         </div>

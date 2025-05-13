@@ -6,7 +6,7 @@ defmodule TechvitalHubWeb.CourseLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, stream(socket, :courses, Courses.list_courses())}
+    {:ok, stream(socket, :courses, Courses.list_courses(nil))}
   end
 
   @impl true
