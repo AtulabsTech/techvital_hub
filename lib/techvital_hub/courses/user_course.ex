@@ -12,13 +12,33 @@ defmodule TechvitalHub.Courses.UserCourse do
       default: :enrolled
 
     field :is_active, :boolean, default: false
+    field :last_accessed_at, :utc_datetime
+    field :progress_percentage, :integer, default: 0
+    field :completed_at, :utc_datetime
 
     timestamps()
   end
 
   def changeset(user_course, attrs) do
+    IO.inspect(attrs, label: "attrstts")
+
     user_course
-    |> cast(attrs, [:user_id, :course_id, :status, :is_active])
-    |> validate_required([:user_id, :course_id, :status, :is_active])
+    |> cast(attrs, [
+      :user_id,
+      :course_id,
+      :status,
+      :is_active,
+      :last_accessed_at,
+      :progress_percentage,
+      :completed_at
+    ])
+    |> validate_required([
+      :user_id,
+      :course_id,
+      :status,
+      :is_active,
+      :last_accessed_at,
+      :progress_percentage
+    ])
   end
 end

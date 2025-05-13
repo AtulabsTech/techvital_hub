@@ -12,9 +12,6 @@ defmodule TechvitalHubWeb.DashboardLive.Index do
   def mount(_params, session, socket) do
     user = Accounts.get_user_by_session_token(session["user_token"])
 
-    user_courses = Courses.list_user_courses(user)
-    current_course = Enum.find(user_courses, &(&1.is_active == true))
-
     stats = %{
       points: 48,
       courses: 3,
@@ -26,8 +23,17 @@ defmodule TechvitalHubWeb.DashboardLive.Index do
      |> assign(page_title: "Dashboard")
      |> assign(current_user: user)
      |> assign(stats: stats)
-     |> assign(current_course: current_course)
-     |> assign(user_courses: user_courses)
+     |> assign(active_course: Courses.get_active_course(user))
      |> assign(courses: Courses.list_courses())}
+  end
+
+  @impl Phoenix.LiveView
+  def handle_params(_params, _uri, socket) do
+    active_course = Courses.get_active_course(socket.assigns.current_user)
+
+    {:noreply,
+     assign(socket,
+       active_course: active_course
+     )}
   end
 end

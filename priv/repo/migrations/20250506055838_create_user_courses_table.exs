@@ -3,13 +3,17 @@ defmodule TechvitalHub.Repo.Migrations.CreateUserCoursesTable do
 
   def change do
     create table(:user_courses, primary_key: false) do
-      add :user_id, references(:users, type: :binary_id, on_delete: :delete_all)
-
       add :course_id, references(:courses, type: :binary_id, on_delete: :delete_all),
         primary_key: true
 
+      add :user_id, references(:users, type: :binary_id, on_delete: :delete_all)
+
       add :status, :string, default: "enrolled"
       add :is_active, :boolean, default: false
+      add :last_accessed_at, :utc_datetime
+      add :progress_percentage, :integer, default: 0
+      add :completed_at, :utc_datetime
+
       timestamps()
     end
 

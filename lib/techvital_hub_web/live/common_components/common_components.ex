@@ -5,33 +5,37 @@ defmodule TechvitalHubWeb.CommonComponents do
 
   alias TechvitalHubWeb.HomeComponents
 
-  attr :current_course, :map, required: true
+  attr :active_course, :map, required: true
   # attr(:continue_learning, :map, required: true)
 
   def current_module_card(assigns) do
     ~H"""
     <div>
       <div
-        :if={@current_course}
+        :if={@active_course}
         class="bg-white rounded-xl shadow p-6 flex flex-col md:flex-row items-center gap-6"
       >
-        <img src={@current_course.image} alt="Course" class="w-24 h-24 rounded-xl bg-gray-50" />
+        <img
+          src={@active_course.course.thumbnail_url}
+          alt="Course"
+          class="w-40 h-40 rounded-xl bg-gray-50"
+        />
         <div class="flex-1">
           <div class="flex items-center gap-2 mb-1">
             <span class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded">
               Current Course
             </span>
           </div>
-          <h2 class="text-lg font-bold mb-1">{@current_course.title}</h2>
+          <h2 class="text-lg font-bold mb-1">{@active_course.course.title}</h2>
           <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
             <div
               class="bg-purple-500 h-2 rounded-full"
-              style={"width: #{@continue_learning.percentage_completed}%"}
+              style={"width: #{@active_course.progress_percentage}%"}
             >
             </div>
           </div>
           <p class="text-xs text-gray-500 mb-2">
-            {@continue_learning.percentage_completed}% of 100% Completed
+            {@active_course.progress_percentage}% of 100% Completed
           </p>
           <button class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition">
             Resume learning
@@ -94,7 +98,7 @@ defmodule TechvitalHubWeb.CommonComponents do
           </div>
        --%>
       <div
-        :if={!@current_course}
+        :if={!@active_course}
         class="bg-white rounded-xl shadow p-6 flex flex-col md:flex-row items-center gap-6"
       >
         <div class="flex-1">

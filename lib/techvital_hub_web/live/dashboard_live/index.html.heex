@@ -2,8 +2,8 @@
   <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
     <div>
       <h1 class="text-3xl font-bold mb-1">Hello, {@current_user.first_name}!</h1>
-      <p :if={@current_course} class="text-white">You're 37% closer to your goal. ⚡</p>
-      <p :if={!@current_course} class="text-white">
+      <p :if={@active_course} class="text-white">You're 37% closer to your goal. ⚡</p>
+      <p :if={!@active_course} class="text-white">
         Welcome to TechVital Hub! We have a course with the best selection of modules just for you.
       </p>
     </div>
@@ -31,7 +31,7 @@
 
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
     <div class="lg:col-span-2 flex flex-col gap-8">
-      <CommonComponents.current_module_card current_course={@current_course} />
+      <CommonComponents.current_module_card active_course={@active_course} />
 
       <div>
         <div class="md:flex items-center justify-between mb-2">

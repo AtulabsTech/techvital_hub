@@ -104,6 +104,9 @@ defmodule TechvitalHub.Courses do
           user_id: user.id,
           course_id: course.id,
           status: :in_progress,
+          progress_percentage: 0,
+          last_accessed_at: DateTime.utc_now(),
+          completed_at: nil,
           is_active: true
         })
         |> Repo.insert(returning: [:user_id, :course_id])
@@ -173,5 +176,56 @@ defmodule TechvitalHub.Courses do
   """
   def change_course(%Course{} = course, attrs \\ %{}) do
     Course.changeset(course, attrs)
+  end
+
+  @doc """
+  Gets the user's currently active course.
+
+  ## Examples
+
+      iex> get_active_course(user)
+      %Course{}
+  """
+  def get_active_course(user) do
+    Repo.one(
+      from uc in UserCourse,
+        join: c in Course,
+        on: uc.course_id == c.id,
+        where: uc.user_id == ^user.id and uc.is_active == true,
+        select: %{
+          course: c,
+          status: uc.status,
+          is_active: uc.is_active,
+          last_accessed_at: uc.last_accessed_at,
+          progress_percentage: uc.progress_percentage,
+          completed_at: uc.completed_at
+        }
+    )
+  end
+
+  @doc """
+  Lists all courses in progress for a user with their user-specific data.
+
+  ## Examples
+
+      iex> list_in_progress_courses(user)
+      [%Course{}, ...]
+  """
+  def list_in_progress_courses(user) do
+    Repo.all(
+      from uc in UserCourse,
+        join: c in Course,
+        on: uc.course_id == c.id,
+        where: uc.user_id == ^user.id and uc.status == :in_progress,
+        select: %{
+          course: c,
+          status: uc.status,
+          is_active: uc.is_active,
+          last_accessed_at: uc.last_accessed_at,
+          progress_percentage: uc.progress_percentage,
+          completed_at: uc.completed_at
+        },
+        order_by: [desc: uc.last_accessed_at]
+    )
   end
 end
