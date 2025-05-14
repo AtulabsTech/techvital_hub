@@ -1,4 +1,6 @@
 defmodule TechvitalHubWeb.Plugs.RoleCheck do
+  @moduledoc false
+
   import Plug.Conn
   import Phoenix.Controller
 

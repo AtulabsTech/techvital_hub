@@ -1,4 +1,6 @@
 defmodule TechvitalHub.Courses.Course do
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
 
