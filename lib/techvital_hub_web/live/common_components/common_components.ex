@@ -88,7 +88,12 @@ defmodule TechvitalHubWeb.CommonComponents do
         <h2 class="text-lg font-medium text-gray-900 mb-4">Overall Progress</h2>
         <div class="flex flex-col items-center">
           <div class="relative h-32 w-32">
-            <HomeComponents.progress class="w-full h-full" variant="radial" text="75%" value={75} />
+            <HomeComponents.progress
+              class="w-full h-full"
+              variant="radial"
+              text={"#{@overall_progress}%"}
+              value={@overall_progress}
+            />
           </div>
           <div class="mt-4 flex justify-between w-full">
             <div class="text-center">

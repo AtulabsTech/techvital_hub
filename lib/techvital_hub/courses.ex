@@ -23,8 +23,7 @@ defmodule TechvitalHub.Courses do
   end
 
   def list_courses(filter) when not is_nil(filter) do
-    IO.inspect(filter)
-    Repo.all(from c in Course, where: c.difficulty_level == ^filter) |> IO.inspect()
+    Repo.all(from c in Course, where: c.difficulty_level == ^filter)
   end
 
   def list_courses(_filters) do
@@ -43,10 +42,7 @@ defmodule TechvitalHub.Courses do
   def list_user_courses(user) do
     Repo.all(
       from uc in UserCourse,
-        join: c in Course,
-        on: uc.course_id == c.id,
-        where: uc.user_id == ^user.id,
-        select: c
+        where: uc.user_id == ^user.id and uc.status == ^"in_progress"
     )
   end
 

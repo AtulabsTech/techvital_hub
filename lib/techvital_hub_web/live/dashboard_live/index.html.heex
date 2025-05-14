@@ -2,7 +2,9 @@
   <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
     <div>
       <h1 class="text-3xl font-bold mb-1">Hello, {@current_user.first_name}!</h1>
-      <p :if={@active_course} class="text-white">You're 37% closer to your goal. ⚡</p>
+      <p :if={@active_course} class="text-white">
+        You're {@active_course.progress_percentage}% closer to your goal. ⚡
+      </p>
       <p :if={!@active_course} class="text-white">
         Welcome to TechVital Hub! We have a course with the best selection of modules just for you.
       </p>
@@ -62,10 +64,9 @@
         </div>
       </div>
     </div>
-    
-<!-- Right: Streak, XP, Job Board -->
+
     <div class="flex flex-col gap-8">
-      <CommonComponents.overall_progress />
+      <CommonComponents.overall_progress overall_progress={@overall_progress} />
 
       <%!-- <!-- Future Leader Board -->
       <div class="bg-gradient-to-br from-purple-400 to-blue-500 rounded-xl shadow p-6 text-white">

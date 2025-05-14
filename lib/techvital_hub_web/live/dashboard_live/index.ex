@@ -23,6 +23,7 @@ defmodule TechvitalHubWeb.DashboardLive.Index do
      |> assign(page_title: "Dashboard")
      |> assign(current_user: user)
      |> assign(stats: stats)
+     |> assign(overall_progress: overall_progress(user))
      |> assign(active_course: Courses.get_active_course(user))
      |> assign(courses: Courses.list_courses(nil))}
   end
@@ -42,5 +43,17 @@ defmodule TechvitalHubWeb.DashboardLive.Index do
     filtered_courses = Courses.list_courses(String.downcase(filter))
 
     {:noreply, socket |> assign(courses: filtered_courses)}
+  end
+
+  defp overall_progress(user) do
+    case Courses.list_user_courses(user) do
+      [] ->
+        0
+
+      courses ->
+        Enum.reduce(courses, 0, fn x, acc ->
+          ceil((x.progress_percentage + acc) / length(courses))
+        end)
+    end
   end
 end
