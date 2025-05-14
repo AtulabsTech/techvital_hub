@@ -439,10 +439,10 @@ defmodule TechvitalHubWeb.HomeComponents do
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-4">
           <%= if @current_user do %>
-            <a :if={@current_user.role == :admin} href="/admin/dashboard">
+            <a :if={@current_user.role == "admin"} href="/admin/dashboard">
               <img src={~p"/images/default.svg"} width="46" />
             </a>
-            <a :if={@current_user.role != :admin} href="/dashboard">
+            <a :if={@current_user.role != "admin"} href="/dashboard">
               <img src={~p"/images/default.svg"} width="46" />
             </a>
           <% else %>
@@ -557,14 +557,14 @@ defmodule TechvitalHubWeb.HomeComponents do
             <div class="hover:bg-gray-200 p-2 rounded-lg">
               <.link
                 navigate={
-                  if @current_user.role == :admin, do: ~p"/admin/dashboard", else: ~p"/dashboard"
+                  if @current_user.role == "admin", do: ~p"/admin/dashboard", else: ~p"/dashboard"
                 }
                 class="leading-6 text-zinc-900"
               >
                 Dashboard
               </.link>
             </div>
-            <div :if={@current_user.role != :admin} class="hover:bg-gray-200 p-2 rounded-lg">
+            <div :if={@current_user.role != "admin"} class="hover:bg-gray-200 p-2 rounded-lg">
               <.link navigate={~p"/dashboard"} class="leading-6 text-zinc-900">
                 Your Journey
               </.link>

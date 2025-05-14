@@ -281,6 +281,6 @@ defmodule TechvitalHubWeb.UserAuth do
   defp maybe_store_return_to(conn), do: conn
 
   defp signed_in_path(_conn, user) do
-    if user.role == :admin, do: ~p"/admin/dashboard", else: ~p"/dashboard"
+    if user.role == "admin", do: ~p"/admin/dashboard", else: ~p"/dashboard"
   end
 end
