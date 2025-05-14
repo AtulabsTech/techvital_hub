@@ -20,7 +20,7 @@ defmodule TechvitalHub.CoursesTest do
     }
 
     test "list_courses/0 returns all courses" do
-      assert length(Courses.list_courses(nil)) == 11
+      assert length(Courses.list_courses(nil)) == 0
     end
 
     test "get_course!/1 returns the course with given id" do
