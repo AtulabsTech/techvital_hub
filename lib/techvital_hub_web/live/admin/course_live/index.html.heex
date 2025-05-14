@@ -1,0 +1,67 @@
+<.header>
+  Listing Courses
+  <:actions :if={@live_action == :admin}>
+    <.link patch={~p"/admin/courses/new"}>
+      <.button>New Course</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="courses"
+  rows={@streams.courses}
+  row_click={
+    fn {_id, course} ->
+      if @live_action == :admin do
+        JS.navigate(~p"/admin/courses/#{course}")
+      else
+        JS.navigate(~p"/courses/#{course}")
+      end
+    end
+  }
+>
+  <:col :let={{_id, course}} label="Title">{course.title}</:col>
+  <:col :let={{_id, course}} label="Description">{course.description}</:col>
+  <:col :let={{_id, course}} label="Difficulty level">{course.difficulty_level}</:col>
+  <:col :let={{_id, course}} label="Duration hours">{course.duration_hours}</:col>
+  <:col :let={{_id, course}} :if={@live_action == :admin} label="Thumbnail url">
+    {course.thumbnail_url}
+  </:col>
+  <:col :let={{_id, course}} :if={@live_action == :admin} label="Is featured">
+    {course.is_featured}
+  </:col>
+  <:col :let={{_id, course}} label="Phase">{course.phase}</:col>
+  <:col :let={{_id, course}} :if={@live_action == :admin} label="Position">
+    {course.position}
+  </:col>
+  <:action :let={{_id, course}} :if={@live_action == :admin}>
+    <div class="sr-only">
+      <.link navigate={~p"/admin/courses/#{course}"}>Show</.link>
+    </div>
+    <.link patch={~p"/admin/courses/#{course}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, course}} :if={@live_action == :admin}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: course.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="course-modal"
+  show
+  on_cancel={JS.patch(~p"/admin/courses")}
+>
+  <.live_component
+    module={TechvitalHubWeb.CourseLive.FormComponent}
+    id={@course.id || :new}
+    title={@page_title}
+    action={@live_action}
+    course={@course}
+    patch={~p"/admin/courses"}
+  />
+</.modal>

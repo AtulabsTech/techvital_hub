@@ -65,7 +65,7 @@ defmodule TechvitalHubWeb.OnboardingLive.UserRegistration.New do
             <.input
               field={@form[:policy_and_terms]}
               type="checkbox"
-              label="I agree with EasyBills' Terms of Use and Privacy Policy"
+              label="I agree with Techvital Hub' Terms of Use and Privacy Policy"
             />
           </span>
         </label>

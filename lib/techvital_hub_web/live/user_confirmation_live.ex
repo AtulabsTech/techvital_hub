@@ -5,7 +5,7 @@ defmodule TechvitalHubWeb.UserConfirmationLive do
 
   def render(%{live_action: :edit} = assigns) do
     ~H"""
-    <div class="mx-auto max-w-sm pt-48">
+    <div class="mx-auto max-w-sm pt-[5%]">
       <.header class="text-center text-sm md:text-base lg:text-lg">Confirm Account</.header>
 
       <.simple_form for={@form} id="confirmation_form" phx-submit="confirm_account">
