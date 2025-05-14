@@ -5,12 +5,14 @@
 ### Contexts and Schema
 
 1. **Courses Context**
+
    - Course schema
    - Module schema
    - Lesson schema
    - Quiz/Challenge schema
 
 2. **User Progress Context**
+
    - CourseProgress schema
    - LessonProgress schema
    - ChallengeProgress schema
@@ -25,24 +27,29 @@
 Based on the provided design, we'll implement these LiveView components:
 
 1. **Main Dashboard Layout**
+
    - Navigation sidebar
    - User profile section
    - Main content area
 
 2. **Dashboard Header**
+
    - Personal greeting with progress percentage
    - Stats cards (points, courses, certificates, challenges)
 
 3. **Continue Learning Section**
+
    - Current course with progress bar
    - Resume learning button
 
 4. **Learning Streak Component**
+
    - Days streak counter
    - Weekly tracker (S M T W T F S)
    - Skill progress bars with XP
 
 5. **Recommended Courses**
+
    - Course cards with difficulty level
    - Filtering options (All, Beginner, Intermediate, Advanced)
 
@@ -52,12 +59,14 @@ Based on the provided design, we'll implement these LiveView components:
 ## 3. Admin Dashboard Implementation
 
 1. **Course Management**
+
    - Create/Edit/Delete courses
    - Manage course modules and lessons
    - Upload and organize content (text, images, videos)
    - Create and manage quizzes/challenges
 
 2. **User Management**
+
    - View and manage user accounts
    - Track user progress
    - Assign roles (student, admin)
@@ -82,6 +91,7 @@ Based on the provided design, we'll implement these LiveView components:
 Based on the website outline, we'll organize content into these areas:
 
 - **Learn Phase**
+
   - HTML & CSS Foundations
   - Core Language Concepts (Elixir)
   - JavaScript & DOM
@@ -90,6 +100,7 @@ Based on the website outline, we'll organize content into these areas:
   - Version Control with Git
 
 - **Build Phase**
+
   - LiveView
   - OTP & Testing
   - Advanced Phoenix and LiveView
@@ -108,6 +119,7 @@ Based on the website outline, we'll organize content into these areas:
   - Freelancing and OpenSource
 
 ## Future additions
+
 - add a chat feature
 - add ask ai feature (ai to provide a roadmap)
 - add a blog feature
