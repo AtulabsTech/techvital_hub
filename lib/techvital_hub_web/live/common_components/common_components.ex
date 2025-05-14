@@ -36,9 +36,12 @@ defmodule TechvitalHubWeb.CommonComponents do
           <p class="text-xs text-gray-500 mb-2">
             {@active_course.progress_percentage}% of 100% Completed
           </p>
-          <button class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition">
+          <.link
+            navigate={~p"/courses/#{@active_course.course_id}"}
+            class="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition"
+          >
             Resume learning
-          </button>
+          </.link>
         </div>
       </div>
       <div
