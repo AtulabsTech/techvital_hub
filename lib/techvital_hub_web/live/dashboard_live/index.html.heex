@@ -15,11 +15,11 @@
         <span class="text-xs text-gray-700">XP</span>
       </div>
       <div class="bg-purple-100 rounded-lg px-4 py-2 flex flex-col items-center">
-        <span class="text-xl font-bold text-purple-600">{@stats.courses}</span>
+        <span class="text-xl font-bold text-purple-600">{@stats.courses_in_progress}</span>
         <span class="text-xs text-gray-700">Modules</span>
       </div>
       <div class="bg-yellow-50 rounded-lg px-4 py-2 flex flex-col items-center">
-        <span class="text-xl font-bold text-yellow-700">100</span>
+        <span class="text-xl font-bold text-yellow-700">{@stats.streak}</span>
         <span class="text-xs text-gray-700">
           <Icons.flame_icon />
         </span>
@@ -66,7 +66,11 @@
     </div>
 
     <div class="flex flex-col gap-8">
-      <CommonComponents.overall_progress overall_progress={@overall_progress} />
+      <CommonComponents.overall_progress
+        overall_progress={@overall_progress}
+        user_courses={@user_courses}
+        stats={@stats}
+      />
 
       <%!-- <!-- Future Leader Board -->
       <div class="bg-gradient-to-br from-purple-400 to-blue-500 rounded-xl shadow p-6 text-white">

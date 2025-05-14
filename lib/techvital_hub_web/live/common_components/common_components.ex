@@ -86,7 +86,7 @@ defmodule TechvitalHubWeb.CommonComponents do
     <div class="bg-white rounded-lg shadow overflow-hidden">
       <div class="p-6">
         <h2 class="text-lg font-medium text-gray-900 mb-4">Overall Progress</h2>
-        <div class="flex flex-col items-center">
+        <div class="flex flex-col items-center mx-12">
           <div class="relative h-32 w-32">
             <HomeComponents.progress
               class="w-full h-full"
@@ -97,27 +97,23 @@ defmodule TechvitalHubWeb.CommonComponents do
           </div>
           <div class="mt-4 flex justify-between w-full">
             <div class="text-center">
-              <span class="block text-sm font-medium text-gray-500">65</span>
+              <span class="block text-sm font-medium text-gray-500">{length(@user_courses)}</span>
               <span class="block text-xs text-gray-400">MODULES</span>
             </div>
             <div class="text-center">
-              <span class="block text-sm font-medium text-gray-500">12</span>
-              <span class="block text-xs text-gray-400">HOURS</span>
-            </div>
-            <div class="text-center">
-              <span class="block text-sm font-medium text-gray-500">85</span>
-              <span class="block text-xs text-gray-400">TOTAL</span>
+              <span class="block text-sm font-medium text-gray-500">{@stats.learning_duration}</span>
+              <span class="block text-xs text-gray-400">TOTAL HOURS</span>
             </div>
           </div>
 
           <div class="mt-6 space-y-3 w-full">
             <div class="flex justify-between text-sm">
-              <span class="font-medium text-gray-700">Completed Modules</span>
-              <span class="text-gray-500">5/7</span>
+              <span class="font-medium text-gray-700">Completed Courses</span>
+              <span class="text-gray-500">{@stats.completed_courses}</span>
             </div>
             <div class="flex justify-between text-sm">
-              <span class="font-medium text-gray-700">Open Modules</span>
-              <span class="text-gray-500">2/7</span>
+              <span class="font-medium text-gray-700">In Progress</span>
+              <span class="text-gray-500">{@stats.courses_in_progress}</span>
             </div>
           </div>
         </div>

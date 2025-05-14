@@ -11,11 +11,15 @@ defmodule TechvitalHubWeb.DashboardLive.Index do
   @impl Phoenix.LiveView
   def mount(_params, session, socket) do
     user = Accounts.get_user_by_session_token(session["user_token"])
+    user_courses = Courses.list_user_courses(user)
 
     stats = %{
-      points: 48,
-      courses: 3,
-      challenges: 11
+      points: 0,
+      streak: 0,
+      challenges: 0,
+      learning_duration: total_learning_time(user_courses),
+      completed_courses: length(get_completed_courses(user_courses)),
+      courses_in_progress: length(get_in_progress_courses(user_courses))
     }
 
     {:ok,
@@ -24,7 +28,8 @@ defmodule TechvitalHubWeb.DashboardLive.Index do
      |> assign(current_user: user)
      |> assign(stats: stats)
      |> assign(overall_progress: overall_progress(user))
-     |> assign(active_course: Courses.get_active_course(user))
+     |> assign(user_courses: user_courses)
+     |> assign(active_course: get_active_course(user_courses))
      |> assign(courses: Courses.list_courses(nil))}
   end
 
@@ -51,9 +56,27 @@ defmodule TechvitalHubWeb.DashboardLive.Index do
         0
 
       courses ->
-        Enum.reduce(courses, 0, fn x, acc ->
-          ceil((x.progress_percentage + acc) / length(courses))
+        Enum.reduce(courses, 0, fn course, acc ->
+          ceil((course.progress_percentage + acc) / length(courses))
         end)
     end
+  end
+
+  defp total_learning_time(user_courses) do
+    Enum.reduce(user_courses, 0, fn course, acc ->
+      acc + course.course.duration_hours
+    end)
+  end
+
+  defp get_active_course(user_courses) do
+    Enum.find(user_courses, fn course -> course.is_active == true end)
+  end
+
+  defp get_completed_courses(user_courses) do
+    Enum.filter(user_courses, fn course -> course.status == :completed end)
+  end
+
+  defp get_in_progress_courses(user_courses) do
+    Enum.filter(user_courses, fn course -> course.status == :in_progress end)
   end
 end

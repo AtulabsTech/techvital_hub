@@ -6,7 +6,8 @@ defmodule TechvitalHub.Repo.Migrations.CreateUserCoursesTable do
       add :course_id, references(:courses, type: :binary_id, on_delete: :delete_all),
         primary_key: true
 
-      add :user_id, references(:users, type: :binary_id, on_delete: :delete_all)
+      add :user_id, references(:users, type: :binary_id, on_delete: :delete_all),
+        primary_key: true
 
       add :status, :string, default: "enrolled"
       add :is_active, :boolean, default: false

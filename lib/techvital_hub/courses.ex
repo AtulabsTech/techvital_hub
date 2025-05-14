@@ -42,7 +42,8 @@ defmodule TechvitalHub.Courses do
   def list_user_courses(user) do
     Repo.all(
       from uc in UserCourse,
-        where: uc.user_id == ^user.id and uc.status == ^"in_progress"
+        where: uc.user_id == ^user.id and uc.status == ^"in_progress",
+        preload: [:course]
     )
   end
 
