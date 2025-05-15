@@ -77,6 +77,23 @@ defmodule TechvitalHubWeb.UserRegistrationLive do
   end
 
   @impl Phoenix.LiveView
+  def handle_event("resend_confirmation", %{"user_email" => user_params}, socket) do
+    case Accounts.get_user_by_email(user_params) do
+      nil ->
+        {:noreply,
+         socket
+         |> put_flash(:error, "There was a problem with your registration. Please try again.")
+         |> redirect(to: ~p"/register")}
+
+      user ->
+        Accounts.deliver_user_confirmation_instructions(user, &url(~p"/confirm/#{&1}"))
+
+        {:noreply,
+         socket
+         |> put_flash(:info, "Please check your email again to confirm your account.")}
+    end
+  end
+
   def handle_event("show_email_form", _, socket) do
     {:noreply, assign(socket, :show_email_form, true)}
   end
@@ -107,6 +124,7 @@ defmodule TechvitalHubWeb.UserRegistrationLive do
 
   def handle_event("validate", %{"user" => user_params}, socket) do
     changeset = Accounts.change_user_registration(%User{}, user_params)
+
     {:noreply, assign_form(socket, Map.put(changeset, :action, :validate))}
   end
 

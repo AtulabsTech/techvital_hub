@@ -96,6 +96,32 @@ defmodule TechvitalHubWeb.UserRegistrationLiveTest do
       refute user.confirmed_at
     end
 
+    # test "resends confirmation instructions", %{conn: conn} do
+    #   {:ok, lv, _html} = live(conn, ~p"/register")
+
+    #   lv
+    #   |> element("button", "Continue with Email")
+    #   |> render_click()
+
+    #   attrs = %{
+    #     email: unique_user_email(),
+    #     password: valid_user_password(),
+    #     first_name: "Jane",
+    #     last_name: "Done"
+    #   }
+
+    #   same_live =
+    #     lv
+    #     |> element("#registration_form")
+    #     |> render_submit(%{user: attrs})
+
+    #   same_live
+    #   |> element("#resend_confirmation")
+    #   |> render_click()
+
+    #   assert render(lv) =~ "Please check your email again to confirm your account"
+    # end
+
     test "renders errors for duplicated email", %{conn: conn} do
       {:ok, lv, _html} = live(conn, ~p"/register")
 

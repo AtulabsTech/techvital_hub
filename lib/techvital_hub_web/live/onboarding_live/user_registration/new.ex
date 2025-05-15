@@ -71,7 +71,11 @@ defmodule TechvitalHubWeb.OnboardingLive.UserRegistration.New do
         </label>
 
         <:actions>
-          <.button phx-disable-with="Creating account..." class="w-full">
+          <.button
+            phx-disable-with="Creating account..."
+            class="w-full"
+            disabled={!@form.source.valid?}
+          >
             Sign Up
           </.button>
         </:actions>
