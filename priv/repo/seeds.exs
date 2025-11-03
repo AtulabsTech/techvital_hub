@@ -14,6 +14,8 @@ alias TechvitalHub.Courses.Course
 alias TechvitalHub.Accounts.User
 alias TechvitalHub.Repo
 
+import Ecto.Query, only: [from: 2]
+
 # Create sample courses
 courses = [
   %{
@@ -172,8 +174,8 @@ end)
 # TODO: Remove this later
 users = [
   %{
-    first_name: "James",
-    last_name: "Rowa",
+    first_name: "You",
+    last_name: "You",
     email: "You@gmail.com",
     password: "You@123456789",
     role: "admin"
@@ -187,8 +189,22 @@ users = [
   }
 ]
 
-Enum.each(users, fn user_attrs ->
-  %User{}
-  |> User.registration_changeset(user_attrs)
-  |> Repo.insert!()
-end)
+# Insert or update users
+created_users =
+  Enum.map(users, fn user_attrs ->
+    case Repo.get_by(User, email: user_attrs.email) do
+      nil ->
+        %User{}
+        |> User.registration_changeset(user_attrs)
+        |> Repo.insert!()
+
+      existing_user ->
+        existing_user
+    end
+  end)
+
+# Confirm all created/existing users
+emails = Enum.map(users, & &1.email)
+
+from(u in User, where: u.email in ^emails)
+|> Repo.update_all(set: [confirmed_at: DateTime.utc_now()])
