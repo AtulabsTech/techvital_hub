@@ -174,8 +174,8 @@ users = [
   %{
     first_name: "James",
     last_name: "Rowa",
-    email: "jrowah@gmail.com",
-    password: "Jrowah@123456789",
+    email: "You@gmail.com",
+    password: "You@123456789",
     role: "admin"
   },
   %{
