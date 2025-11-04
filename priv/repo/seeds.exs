@@ -170,41 +170,49 @@ Enum.each(courses, fn course_attrs ->
   |> Repo.insert!()
 end)
 
-# Insert users into the database
-# TODO: Remove this later
-users = [
-  %{
-    first_name: "You",
-    last_name: "You",
-    email: "You@gmail.com",
-    password: "You@123456789",
-    role: "admin"
-  },
-  %{
-    first_name: "Test",
-    last_name: "Learner",
-    email: "test@test.com",
-    password: "Test@123456789",
-    role: "learner"
-  }
-]
+# Insert test users only in development environment
+# These users should not be created in production
+if Mix.env() == :dev do
+  IO.puts("Creating development test users...")
 
-# Insert or update users
-created_users =
-  Enum.map(users, fn user_attrs ->
-    case Repo.get_by(User, email: user_attrs.email) do
-      nil ->
-        %User{}
-        |> User.registration_changeset(user_attrs)
-        |> Repo.insert!()
+  users = [
+    %{
+      first_name: "Dev",
+      last_name: "Admin",
+      email: "admin@example.com",
+      password: "DevAdmin123!",
+      role: "admin"
+    },
+    %{
+      first_name: "Test",
+      last_name: "Learner",
+      email: "learner@example.com",
+      password: "TestLearner123!",
+      role: "learner"
+    }
+  ]
 
-      existing_user ->
-        existing_user
-    end
-  end)
+  # Insert or update users
+  created_users =
+    Enum.map(users, fn user_attrs ->
+      case Repo.get_by(User, email: user_attrs.email) do
+        nil ->
+          %User{}
+          |> User.registration_changeset(user_attrs)
+          |> Repo.insert!()
 
-# Confirm all created/existing users
-emails = Enum.map(users, & &1.email)
+        existing_user ->
+          existing_user
+      end
+    end)
 
-from(u in User, where: u.email in ^emails)
-|> Repo.update_all(set: [confirmed_at: DateTime.utc_now()])
+  # Confirm all created/existing users
+  emails = Enum.map(users, & &1.email)
+
+  from(u in User, where: u.email in ^emails)
+  |> Repo.update_all(set: [confirmed_at: DateTime.utc_now()])
+
+  IO.puts("Development test users created successfully!")
+else
+  IO.puts("Skipping test user creation in #{Mix.env()} environment")
+end

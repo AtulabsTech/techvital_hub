@@ -1,0 +1,107 @@
+name: Question/Support
+description: Ask a question or get help with TechvitalHub
+title: '[Question]: '
+labels: ['question', 'needs-triage']
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reaching out! Please fill out this form to get help with TechvitalHub.
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Prerequisites
+      description: Please confirm you've done the following before asking your question
+      options:
+        - label: I have read the [README](README.md) and [Contributing Guidelines](CONTRIBUTING.md)
+          required: true
+        - label: I have searched existing issues and discussions for similar questions
+          required: true
+        - label: This is a question/support request, not a bug report or feature request
+          required: true
+
+  - type: dropdown
+    id: question-type
+    attributes:
+      label: Question Type
+      description: What type of question is this?
+      options:
+        - 'Setup/Installation Help'
+        - 'Usage/How-to Question'
+        - 'Configuration Question'
+        - 'Development Question'
+        - 'Deployment Question'
+        - 'Best Practices'
+        - 'Architecture/Design Question'
+        - 'Performance Question'
+        - 'Other'
+    validations:
+      required: true
+
+  - type: textarea
+    id: question-description
+    attributes:
+      label: Question Description
+      description: Clearly describe your question or what you need help with
+      placeholder: Describe your question in detail
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-tried
+    attributes:
+      label: What Have You Tried?
+      description: Describe what you've already attempted to solve this
+      placeholder: |
+        - I tried X but got Y result
+        - I looked at documentation Z
+        - I searched for similar issues
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-outcome
+    attributes:
+      label: Expected Outcome
+      description: What outcome are you trying to achieve?
+      placeholder: Describe what you want to accomplish
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment-info
+    attributes:
+      label: Environment Information
+      description: Provide relevant environment details
+      placeholder: |
+        - OS: (e.g., Ubuntu 20.04, macOS 12.0, Windows 11)
+        - Elixir version: (e.g., 1.14.0)
+        - Phoenix version: (e.g., 1.7.0)
+        - Database: (e.g., PostgreSQL 13.4)
+        - Deployment: (local/staging/production)
+
+  - type: textarea
+    id: relevant-code
+    attributes:
+      label: Relevant Code/Configuration
+      description: Include any relevant code snippets or configuration
+      render: elixir
+      placeholder: Paste any relevant code here
+
+  - type: textarea
+    id: logs-errors
+    attributes:
+      label: Logs/Errors
+      description: Include any relevant logs or error messages
+      render: shell
+      placeholder: Paste any relevant logs or error messages here
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Add any other context about your question
+      placeholder: Any additional information that might be helpful
