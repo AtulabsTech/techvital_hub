@@ -1,0 +1,121 @@
+name: Bug Report
+description: Report a bug to help us improve TechvitalHub
+title: '[Bug]: '
+labels: ['bug', 'needs-triage']
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please fill out this form as completely as possible.
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Prerequisites
+      description: Please confirm the following before submitting your bug report
+      options:
+        - label: I have searched existing issues to ensure this bug hasn't been reported already
+          required: true
+        - label: I have read the [Contributing Guidelines](CONTRIBUTING.md)
+          required: true
+        - label: This is a bug report, not a feature request or question
+          required: true
+
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is
+      placeholder: Describe the bug you encountered
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: Steps to reproduce the behavior
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. Scroll down to '...'
+        4. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: A clear and concise description of what you expected to happen
+      placeholder: Describe what should have happened
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual Behavior
+      description: A clear and concise description of what actually happened
+      placeholder: Describe what actually happened instead
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Bug Severity
+      description: How severe is this bug?
+      options:
+        - 'Low - Minor inconvenience, workaround available'
+        - 'Medium - Significant impact but not blocking'
+        - 'High - Major functionality broken'
+        - 'Critical - Application unusable, data loss, or security issue'
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment Information
+      description: Please provide details about your environment
+      placeholder: |
+        - OS: (e.g., Ubuntu 20.04, macOS 12.0, Windows 11)
+        - Browser: (e.g., Chrome 95, Firefox 94, Safari 15)
+        - Elixir version: (e.g., 1.14.0)
+        - Phoenix version: (e.g., 1.7.0)
+        - Database: (e.g., PostgreSQL 13.4)
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant Logs/Error Messages
+      description: Include any relevant log output or error messages
+      render: shell
+      placeholder: Paste any relevant logs or error messages here
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots to help explain your problem
+      placeholder: Drag and drop screenshots here or provide links
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Add any other context about the problem here
+      placeholder: Any additional information that might be relevant
+
+  - type: checkboxes
+    id: self-assignment
+    attributes:
+      label: Self-Assignment
+      options:
+        - label: I would like to work on fixing this bug
+          required: false

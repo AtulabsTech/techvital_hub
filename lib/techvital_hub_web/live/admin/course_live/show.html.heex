@@ -1,49 +1,50 @@
-<.header>
-  Course {@course.id}
-  <:subtitle>This is a course record from your database.</:subtitle>
-  <:actions :if={@live_action in [:admin, :show]}>
-    <.link patch={~p"/admin/courses/#{@course}/show/edit"} phx-click={JS.push_focus()}>
-      <.button>Edit course</.button>
-    </.link>
-  </:actions>
-</.header>
-<button :if={@live_action == :learner} phx-click={JS.push("start", value: %{id: @course.id})}>
-  Start Module
-</button>
+<div class="w-2/3 mx-auto">
+  <.header>
+    Course {@course.id}
+    <:subtitle>This is a course record from your database.</:subtitle>
+    <:actions :if={@live_action in [:admin, :show]}>
+      <.link patch={~p"/admin/courses/#{@course}/show/edit"} phx-click={JS.push_focus()}>
+        <.button>Edit course</.button>
+      </.link>
+    </:actions>
+  </.header>
+  <button :if={@live_action == :learner} phx-click={JS.push("start", value: %{id: @course.id})}>
+    Start Module
+  </button>
 
-<.list>
-  <:item title="Title">{@course.title}</:item>
-  <:item title="Description">{@course.description}</:item>
-  <:item title="Difficulty level">{@course.difficulty_level}</:item>
-  <:item title="Duration hours">{@course.duration_hours}</:item>
-  <:item :if={@live_action in [:admin, :show]} title="Thumbnail url">
-    {@course.thumbnail_url}
-  </:item>
-  <:item :if={@live_action in [:admin, :show]} title="Is featured">{@course.is_featured}</:item>
-  <:item title="Phase">{@course.phase}</:item>
-  <:item :if={@live_action in [:admin, :show]} title="Position">{@course.position}</:item>
-</.list>
+  <.list>
+    <:item title="Title">{@course.title}</:item>
+    <:item title="Description">{@course.description}</:item>
+    <:item title="Difficulty level">{@course.difficulty_level}</:item>
+    <:item title="Duration hours">{@course.duration_hours}</:item>
+    <:item :if={@live_action in [:admin, :show]} title="Thumbnail url">
+      {@course.thumbnail_url}
+    </:item>
+    <:item :if={@live_action in [:admin, :show]} title="Is featured">{@course.is_featured}</:item>
+    <:item title="Phase">{@course.phase}</:item>
+    <:item :if={@live_action in [:admin, :show]} title="Position">{@course.position}</:item>
+  </.list>
 
-<.back navigate={if @live_action in [:admin, :show], do: ~p"/admin/courses", else: ~p"/courses"}>
-  Back to courses
-</.back>
+  <.back navigate={if @live_action in [:admin, :show], do: ~p"/admin/courses", else: ~p"/courses"}>
+    Back to courses
+  </.back>
 
-<.modal
-  :if={@live_action == :edit}
-  id="course-modal"
-  show
-  on_cancel={JS.patch(~p"/admin/courses/#{@course}")}
->
-  <.live_component
-    module={TechvitalHubWeb.CourseLive.FormComponent}
-    id={@course.id}
-    title={@page_title}
-    action={@live_action}
-    course={@course}
-    patch={~p"/admin/courses/#{@course}"}
-  />
-</.modal>
-<%!-- <!-- Main container -->
+  <.modal
+    :if={@live_action == :edit}
+    id="course-modal"
+    show
+    on_cancel={JS.patch(~p"/admin/courses/#{@course}")}
+  >
+    <.live_component
+      module={TechvitalHubWeb.CourseLive.FormComponent}
+      id={@course.id}
+      title={@page_title}
+      action={@live_action}
+      course={@course}
+      patch={~p"/admin/courses/#{@course}"}
+    />
+  </.modal>
+  <%!-- <!-- Main container -->
 <div class="min-h-screen bg-gray-50 flex">
   <!-- Sidebar -->
   <div class="w-56 bg-white border-r border-gray-200 flex flex-col">
@@ -560,3 +561,4 @@
     </main>
   </div>
 </div> --%>
+</div>

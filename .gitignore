@@ -41,8 +41,18 @@ npm-debug.log
 /priv/plts/
 /screenshots/
 .DS_Store
-.env
 package.json
 package-lock.json
 .vscode/
+
+# Security: Environment and secret files
+.env
+.env.local
+.env.production
+.env.staging
+*.pem
+*.key
+*.crt
+*.p12
+secrets.exs
 

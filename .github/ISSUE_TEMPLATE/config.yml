@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 🛡️ Security Vulnerability
+    url: mailto:security@atulabs.tech
+    about: Please report security vulnerabilities via email, not public issues
+  - name: 📚 Documentation
+    url: https://github.com/AtulabsTech/techvital_hub#readme
+    about: Read the project documentation and setup guide
+  - name: 💬 GitHub Discussions
+    url: https://github.com/AtulabsTech/techvital_hub/discussions
+    about: Ask questions and discuss ideas with the community
