@@ -720,6 +720,104 @@ defmodule TechvitalHubWeb.CoreComponents do
     """
   end
 
+  def logo(assigns) do
+    ~H"""
+    <svg class="w-16 h-16" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+        </linearGradient>
+      </defs>
+      
+    <!-- Outer hexagon representing structure/foundation -->
+      <path
+        d="M 100 20 L 160 55 L 160 125 L 100 160 L 40 125 L 40 55 Z"
+        fill="none"
+        stroke="url(#grad1)"
+        stroke-width="3"
+        opacity="0.6"
+      />
+      
+    <!-- Middle rotating hexagon for dynamism -->
+      <path
+        d="M 100 40 L 140 62.5 L 140 107.5 L 100 130 L 60 107.5 L 60 62.5 Z"
+        fill="none"
+        stroke="url(#grad2)"
+        stroke-width="2.5"
+        opacity="0.8"
+      >
+        <animateTransform
+          attributeName="transform"
+          attributeType="XML"
+          type="rotate"
+          from="0 100 85"
+          to="360 100 85"
+          dur="20s"
+          repeatCount="indefinite"
+        />
+      </path>
+      
+    <!-- Central growth symbol - upward arrow with nodes -->
+      <g fill="url(#grad1)">
+        <!-- Bottom node -->
+        <circle cx="100" cy="110" r="5" />
+        
+    <!-- Middle nodes -->
+        <circle cx="85" cy="90" r="5" />
+        <circle cx="115" cy="90" r="5" />
+        
+    <!-- Top node -->
+        <circle cx="100" cy="70" r="5" />
+        
+    <!-- Connecting lines -->
+        <line x1="100" y1="110" x2="85" y2="90" stroke="url(#grad1)" stroke-width="2.5" />
+        <line x1="100" y1="110" x2="115" y2="90" stroke="url(#grad1)" stroke-width="2.5" />
+        <line x1="85" y1="90" x2="100" y2="70" stroke="url(#grad1)" stroke-width="2.5" />
+        <line x1="115" y1="90" x2="100" y2="70" stroke="url(#grad1)" stroke-width="2.5" />
+        
+    <!-- Upward arrow -->
+        <path
+          d="M 100 70 L 100 50 M 100 50 L 90 60 M 100 50 L 110 60"
+          fill="none"
+          stroke="url(#grad1)"
+          stroke-width="3"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </g>
+      
+    <!-- Code brackets for tech aspect -->
+      <path
+        d="M 70 75 L 65 85 L 70 95"
+        fill="none"
+        stroke="url(#grad2)"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        opacity="0.7"
+      />
+      <path
+        d="M 130 75 L 135 85 L 130 95"
+        fill="none"
+        stroke="url(#grad2)"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        opacity="0.7"
+      />
+      
+    <!-- Pulsing effect on center -->
+      <circle cx="100" cy="85" r="35" fill="url(#grad1)" opacity="0.1">
+        <animate attributeName="r" values="30;40;30" dur="3s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.15;0.05;0.15" dur="3s" repeatCount="indefinite" />
+      </circle>
+    </svg>
+    """
+  end
+
   @doc """
   Renders a [Heroicon](https://heroicons.com).
 

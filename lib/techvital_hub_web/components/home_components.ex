@@ -432,9 +432,9 @@ defmodule TechvitalHubWeb.HomeComponents do
     <div class={
       if is_nil(@current_user),
         do:
-          "md:flex items-center justify-between border-b border-zinc-100 py-4 text-sm md:text-base lg:text-lg font-maven",
+          "md:flex items-center justify-between border-b border-zinc-100 text-sm md:text-base lg:text-lg font-maven",
         else:
-          "flex items center justify-between border-b border-zinc-100 py-4 text-sm md:text-base lg:text-lg font-maven"
+          "flex items center justify-between border-b border-zinc-100 text-sm md:text-base lg:text-lg font-maven"
     }>
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-4">
@@ -443,11 +443,11 @@ defmodule TechvitalHubWeb.HomeComponents do
               <img src={~p"/images/default.svg"} width="46" />
             </a>
             <a :if={@current_user.role != "admin"} href="/dashboard">
-              <img src={~p"/images/default.svg"} width="46" />
+              <CoreComponents.logo />
             </a>
           <% else %>
             <a href="/">
-              <img src={~p"/images/default.svg"} width="46" />
+              <CoreComponents.logo />
             </a>
           <% end %>
           <p class="hidden md:block text-brand rounded-full px-2 font-medium leading-6 text-4xl md:text-2xl lg:text-4xl">
