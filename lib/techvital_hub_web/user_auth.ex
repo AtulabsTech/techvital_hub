@@ -10,6 +10,9 @@ defmodule TechvitalHubWeb.UserAuth do
 
   alias TechvitalHub.Accounts
 
+  @max_failed_login_attempts 5
+  @lockout_duration_minutes 30
+
   # Make the remember me cookie valid for 60 days.
   # If you want bump or reduce this value, also change
   # the token expiry itself in UserToken.
@@ -282,5 +285,37 @@ defmodule TechvitalHubWeb.UserAuth do
 
   defp signed_in_path(_conn, user) do
     if user.role == "admin", do: ~p"/admin/dashboard", else: ~p"/dashboard"
+  end
+
+  @doc """
+  Returns true if the account is locked
+  """
+  def account_locked?(user) do
+    if user.locked_until do
+      DateTime.compare(user.locked_until, DateTime.utc_now()) == :gt
+    else
+      false
+    end
+  end
+
+  @doc """
+  Increments the failed attempts counter and locks the account if max attempts reached
+  """
+  def increment_failed_login_attempts(user) do
+    new_attempts = (user.failed_login_attempts || 0) + 1
+
+    if new_attempts >= @max_failed_login_attempts do
+      lock_until = DateTime.add(DateTime.utc_now(), @lockout_duration_minutes, :minute)
+      %{user | failed_login_attempts: new_attempts, locked_until: lock_until}
+    else
+      %{user | failed_login_attempts: new_attempts}
+    end
+  end
+
+  @doc """
+  Resets the failed attempts counter and unlocks the account
+  """
+  def reset_failed_login_attempts(user) do
+    %{user | failed_login_attempts: 0, locked_until: nil}
   end
 end

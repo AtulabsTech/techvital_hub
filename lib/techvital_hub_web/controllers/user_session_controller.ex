@@ -21,16 +21,37 @@ defmodule TechvitalHubWeb.UserSessionController do
   defp create(conn, %{"user" => user_params}, info) do
     %{"email" => email, "password" => password} = user_params
 
-    if user = Accounts.get_user_by_email_and_password(email, password) do
-      conn
-      |> put_flash(:info, info)
-      |> UserAuth.log_in_user(user, user_params)
-    else
-      # In order to prevent user enumeration attacks, don't disclose whether the email is registered.
-      conn
-      |> put_flash(:error, "Invalid email or password")
-      |> put_flash(:email, String.slice(email, 0, 160))
-      |> redirect(to: ~p"/login")
+    case Accounts.get_user_by_email(email) do
+      nil ->
+        conn
+        |> put_flash(:error, "Invalid email or password")
+        |> put_flash(:email, String.slice(email, 0, 160))
+        |> redirect(to: ~p"/login")
+
+      user ->
+        if UserAuth.account_locked?(user) do
+          minutes_remaining = DateTime.diff(user.locked_until, DateTime.utc_now(), :minute)
+
+          conn
+          |> put_flash(
+            :error,
+            "Account is locked. Please try again in #{minutes_remaining} minutes."
+          )
+          |> put_flash(:email, String.slice(email, 0, 160))
+          |> redirect(to: ~p"/login")
+        else
+          if user = Accounts.get_user_by_email_and_password(email, password) do
+            conn
+            |> put_flash(:info, info)
+            |> UserAuth.log_in_user(user, user_params)
+          else
+            # In order to prevent user enumeration attacks, don't disclose whether the email is registered.
+            conn
+            |> put_flash(:error, "Invalid email or password")
+            |> put_flash(:email, String.slice(email, 0, 160))
+            |> redirect(to: ~p"/login")
+          end
+        end
     end
   end
 
