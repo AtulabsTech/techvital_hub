@@ -4,6 +4,7 @@ defmodule TechvitalHub.Accounts do
   """
 
   import Ecto.Query, warn: false
+  alias TechvitalHubWeb.UserAuth
   alias TechvitalHub.Repo
 
   alias TechvitalHub.Accounts.{User, UserNotifier, UserToken}
@@ -41,7 +42,29 @@ defmodule TechvitalHub.Accounts do
   def get_user_by_email_and_password(email, password)
       when is_binary(email) and is_binary(password) do
     user = Repo.get_by(User, email: email)
-    if User.valid_password?(user, password), do: user
+
+    cond do
+      is_nil(user) ->
+        Bcrypt.no_user_verify()
+        nil
+
+      UserAuth.account_locked?(user) ->
+        nil
+
+      User.valid_password?(user, password) ->
+        user
+        |> User.registration_changeset(%{failed_login_attempts: 0, locked_until: nil})
+        |> Repo.update!()
+
+      true ->
+        user
+        |> User.registration_changeset(%{
+          failed_login_attempts: (user.failed_login_attempts || 0) + 1
+        })
+        |> Repo.update!()
+
+        nil
+    end
   end
 
   @doc """

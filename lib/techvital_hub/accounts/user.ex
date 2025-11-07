@@ -17,6 +17,9 @@ defmodule TechvitalHub.Accounts.User do
     field :hashed_password, :string, redact: true
     field :current_password, :string, virtual: true, redact: true
     field :confirmed_at, :utc_datetime
+    field :failed_login_attempts, :integer, default: 0
+    field :last_failed_login, :utc_datetime
+    field :locked_until, :utc_datetime
 
     many_to_many :courses, TechvitalHub.Courses.Course, join_through: "users_courses"
 
@@ -48,7 +51,16 @@ defmodule TechvitalHub.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :first_name, :last_name, :password, :role])
+    |> cast(attrs, [
+      :email,
+      :first_name,
+      :last_name,
+      :password,
+      :role,
+      :failed_login_attempts,
+      :last_failed_login,
+      :locked_until
+    ])
     |> validate_required([:first_name, :last_name, :role])
     |> validate_email(opts)
     |> validate_password(opts)
